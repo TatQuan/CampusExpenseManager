@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF5F7">
+
+    <!-- App Bar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#E91E63"
+        app:title="Category"
+        app:titleTextColor="#FFFFFF"
+        android:gravity="center_vertical"
+        app:titleCentered="true">
+
+        <!-- Nút dấu cộng bên phải -->
+        <TextView
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="+"
+            android:textSize="28sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_gravity="end"
+            android:paddingEnd="17dp" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Grid Layout chứa các mục -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="599dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="2"
+        android:padding="16dp"
+        android:rowCount="4"
+        android:rowOrderPreserved="false">
+
+        <!-- Thức ăn -->
+        <LinearLayout
+            android:id="@+id/btn_food"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_food" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Food"
+                android:textColor="#000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Quần áo -->
+        <LinearLayout
+            android:id="@+id/btn_clothing"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_clothing" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Clothing"
+                android:textColor="#000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Mỹ phẩm -->
+        <LinearLayout
+            android:id="@+id/btn_cosmetics"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_cosmetics" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Cosmetics"
+                android:textColor="#000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Tiền nhà -->
+        <LinearLayout
+            android:id="@+id/btn_rent"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_rent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Rent"
+                android:textColor="#000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Y tế -->
+        <LinearLayout
+            android:id="@+id/btn_healthcare"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_healthcare" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Healthcare"
+                android:textColor="#000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Giáo dục -->
+        <LinearLayout
+            android:id="@+id/btn_education"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_education" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Education"
+                android:textColor="#000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Tiền điện -->
+        <LinearLayout
+            android:id="@+id/btn_electricity"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_electricity" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Electricity"
+                android:textColor="#000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Đi lại -->
+        <LinearLayout
+            android:id="@+id/btn_transportation"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_transportation" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Transportation"
+                android:textColor="#000"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </GridLayout>
+
+    <!-- Thanh điều hướng dưới cùng -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        app:itemIconTint="@color/nav_item_color"
+        app:itemTextColor="@color/nav_item_color"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/navigation_bar" />
+</LinearLayout>

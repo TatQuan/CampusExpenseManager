@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF5F7">
+
+    <!-- Thanh tiêu đề -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#E91E63"
+        app:title="Set Budget"
+        app:titleTextColor="#FFFFFF"
+        app:titleCentered="true"
+        android:gravity="center" />
+
+    <!-- Form nội dung -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/toolbar"
+        android:padding="16dp"
+        android:background="#FFF5F7">
+
+        <!-- Ảnh banner phía trên -->
+        <ImageView
+            android:id="@+id/img_banner"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_banner"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Ô: Hạng mục -->
+        <EditText
+            android:id="@+id/et_category"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Category"
+            android:background="@drawable/bg_white_rounded"
+            android:padding="12dp"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Ô: Số tiền -->
+        <EditText
+            android:id="@+id/et_budget_amount"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Budget amount"
+            android:background="@drawable/bg_white_rounded"
+            android:padding="12dp"
+            android:inputType="numberDecimal"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Tiêu đề -->
+        <TextView
+            android:id="@+id/tv_date_range"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date Range"
+            android:textColor="#000000"
+            android:textSize="17dp"
+            android:textStyle="normal"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Ô: Thời gian áp dụng -->
+        <EditText
+            android:id="@+id/et_start_date"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Start date"
+            android:background="@drawable/bg_white_rounded"
+            android:padding="12dp"
+            android:focusable="false"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_marginBottom="20dp" />
+
+        <EditText
+            android:id="@+id/et_end_date"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="End date"
+            android:background="@drawable/bg_white_rounded"
+            android:padding="12dp"
+            android:focusable="false"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Nút lưu -->
+        <Button
+            android:id="@+id/btn_save_budget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Budget"
+            android:textColor="#FFF"
+            android:backgroundTint="#E91E63"
+            android:paddingHorizontal="28dp"
+            android:paddingVertical="12dp"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+
+    <!-- Thanh điều hướng dưới cùng -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        app:itemIconTint="@color/nav_item_color"
+        app:itemTextColor="@color/nav_item_color"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/navigation_bar" />
+</RelativeLayout>
