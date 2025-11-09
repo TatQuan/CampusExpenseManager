@@ -7,19 +7,21 @@
     android:background="#FFF5F7">
 
     <!-- App Bar -->
+
+    <!-- Giao diện đăng nhập -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:background="#E91E63"
-        app:title="Login"
-        app:titleTextColor="#FFFFFF"
-        app:titleCentered="true"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Campus Expense Manager"
+        app:titleCentered="true"
+        app:titleTextColor="#FFFFFF" />
 
-    <!-- Giao diện đăng nhập -->
     <LinearLayout
         android:id="@+id/contentLayout"
         android:layout_width="0dp"
@@ -73,18 +75,19 @@
                 android:layout_marginBottom="12dp" />
 
             <!-- Ô password -->
+
+            <!-- Nút enter -->
             <EditText
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/edittext_border_black"
+                android:drawablePadding="8dp"
                 android:hint="Enter your password"
                 android:inputType="textPassword"
-                android:drawablePadding="8dp"
-                android:padding="12dp"
-                android:background="@drawable/edittext_border_black"
-                android:layout_marginBottom="30dp" />
+                android:padding="12dp" />
 
-            <!-- Nút enter -->
             <Button
                 android:id="@+id/btn_enter"
                 android:layout_width="wrap_content"

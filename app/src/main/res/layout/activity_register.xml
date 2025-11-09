@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:background="#E91E63"
-        app:title="Register"
+        app:title="Campus Expense Manager"
         app:titleTextColor="#FFFFFF"
         app:titleCentered="true"
         app:layout_constraintTop_toTopOf="parent"

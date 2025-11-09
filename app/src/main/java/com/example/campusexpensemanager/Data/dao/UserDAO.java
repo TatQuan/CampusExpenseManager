@@ -29,7 +29,11 @@ public class UserDAO {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         String sql = "INSERT INTO " + DatabaseContract.UserTable.TABLE_NAME +
-                " (username, email, password, role) VALUES('" +
+                " (" + DatabaseContract.UserTable.COLUMN_USERNAME + ", " +
+                DatabaseContract.UserTable.COLUMN_EMAIL + ", " +
+                DatabaseContract.UserTable.COLUMN_PASSWORD + ", " +
+                DatabaseContract.UserTable.COLUMN_ROLE + ") " +
+                "VALUES ('" +
                 username + "', '" + email + "', '" + password + "', '" + role + "');";
         db.execSQL(sql);
     }
@@ -70,11 +74,11 @@ public class UserDAO {
     public void updateUser(int userId, String username, String email, String password, String role) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String sql = "UPDATE " + DatabaseContract.UserTable.TABLE_NAME +
-                " SET username='" + username +
-                "', email='" + email +
-                "', password='" + password +
-                "', role='" + role +
-                "' WHERE userId=" + userId + ";";
+                " SET " + DatabaseContract.UserTable.COLUMN_USERNAME + "='" + username +
+                "', " + DatabaseContract.UserTable.COLUMN_EMAIL + "='" + email +
+                "', " + DatabaseContract.UserTable.COLUMN_PASSWORD + "='" + password +
+                "', " + DatabaseContract.UserTable.COLUMN_ROLE + "='" + role +
+                "' WHERE "+ DatabaseContract.UserTable.COLUMN_ID + "=" + userId + ";";
         db.execSQL(sql);
     }
 
@@ -83,8 +87,8 @@ public class UserDAO {
         int isDeleted = 1;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String sql = "UPDATE " + DatabaseContract.UserTable.TABLE_NAME +
-                " SET isDeleted='" + isDeleted +
-                "' WHERE userId=" + userId + ";";
+                " SET " + DatabaseContract.UserTable.COLUMN_IS_DELETED + "='" + isDeleted +
+                "' WHERE "+ DatabaseContract.UserTable.COLUMN_ID + "=" + userId + ";";
         db.execSQL(sql);
     }
 
@@ -92,7 +96,7 @@ public class UserDAO {
     public User login(String username, String password) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sql = "SELECT * FROM " + DatabaseContract.UserTable.TABLE_NAME +
-                " WHERE username='" + username + "' AND password='" + password + "' LIMIT 1;";
+                " WHERE "+ DatabaseContract.UserTable.COLUMN_USERNAME + "='" + username + "' AND "+ DatabaseContract.UserTable.COLUMN_PASSWORD + "='" + password + "' LIMIT 1;";
         Cursor cursor = db.rawQuery(sql, null);
         User user = null;
 
