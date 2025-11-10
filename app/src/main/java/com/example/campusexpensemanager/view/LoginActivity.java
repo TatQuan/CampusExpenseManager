@@ -19,6 +19,9 @@ import com.example.campusexpensemanager.Data.dao.UserDAO;
 import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.models.User;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
 
     Button btnLogin;
@@ -51,10 +54,19 @@ public class LoginActivity extends AppCompatActivity {
             String password = edtPassword.getText().toString();
 
             //Check username and password is empty
-            if (username.isEmpty() || password.isEmpty()) {
-                edtUsername.setError("Username is required");
-                edtPassword.setError("Password is required");
-                return;
+            Map<EditText, String> fields = new LinkedHashMap<>();
+            fields.put(edtUsername, "Username is required");
+            fields.put(edtPassword, "Password is required");
+
+            for (Map.Entry<EditText, String> entry : fields.entrySet()) {
+                EditText field = entry.getKey();
+                String message = entry.getValue();
+
+                if (field.getText().toString().trim().isEmpty()) {
+                    field.setError(message);
+                    field.requestFocus();
+                    return;
+                }
             }
 
             //Check username and password is valid
@@ -78,7 +90,6 @@ public class LoginActivity extends AppCompatActivity {
             }
 
         });
-
 
         registerLink.setOnClickListener(view -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));

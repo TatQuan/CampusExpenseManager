@@ -1,7 +1,12 @@
 package com.example.campusexpensemanager.view;
 
+import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +22,9 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.campusexpensemanager.Data.dao.UserDAO;
 import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.models.User;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -58,19 +66,45 @@ public class RegisterActivity extends AppCompatActivity {
             String password = edtPassword.getText().toString();
             String reenterPassword = edtReenterPassword.getText().toString();
 
-            if (email.isEmpty() || username.isEmpty() || password.isEmpty() || reenterPassword.isEmpty()) {
-                edtEmail.setError("Email is required");
-                edtUsername.setError("Username is required");
-                edtPassword.setError("Password is required");
-                edtReenterPassword.setError("Re-enter password is required");
-                return;
+            //Check all fields is empty
+//            if (email.isEmpty()) {
+//                edtEmail.setError("Email is required");
+//                return;
+//            } else if (username.isEmpty()) {
+//                edtUsername.setError("Username is required");
+//                return;
+//            } else if (password.isEmpty()) {
+//                edtPassword.setError("Password is required");
+//                return;
+//            } else if (reenterPassword.isEmpty()) {
+//                edtReenterPassword.setError("Re-enter password is required");
+//                return;
+//            }
+
+            Map<EditText, String> fields = new LinkedHashMap<>();
+            fields.put(edtEmail, "Email is required");
+            fields.put(edtUsername, "Username is required");
+            fields.put(edtPassword, "Password is required");
+            fields.put(edtReenterPassword, "Re-enter password is required");
+
+            for (Map.Entry<EditText, String> entry : fields.entrySet()) {
+                EditText field = entry.getKey();
+                String message = entry.getValue();
+
+                if (field.getText().toString().trim().isEmpty()) {
+                    field.setError(message);
+                    field.requestFocus();
+                    return;
+                }
             }
 
+            //Check email is valid
             if (password.length() < 6) {
                 edtPassword.setError("Password must be at least 6 characters");
                 return;
             }
 
+            //Check password and reenter password is match
             if (!password.equals(reenterPassword)) {
                 edtReenterPassword.setError("Password does not match");
                 return;
@@ -89,8 +123,6 @@ public class RegisterActivity extends AppCompatActivity {
                 toast.show();
                 finish();
             }
-
-
         });
 
     }
@@ -103,5 +135,24 @@ public class RegisterActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

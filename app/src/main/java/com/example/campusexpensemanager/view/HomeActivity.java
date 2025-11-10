@@ -18,8 +18,11 @@ public class HomeActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
 
+        //Hide action bar
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        //
     }
 }
