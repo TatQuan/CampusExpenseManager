@@ -25,12 +25,14 @@ public class UserDAO {
     }
 
     // INSERT - Thêm user mới
-    public void insertUser(String username, String password, String email, String role) {
+    public void insertUser(String username, String password, String email) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         String sql = "INSERT INTO " + DatabaseContract.UserTable.TABLE_NAME +
-                " (username, email, password, role) VALUES('" +
-                username + "', '" + email + "', '" + password + "', '" + role + "');";
+                " (" + DatabaseContract.UserTable.COLUMN_USERNAME + ", " +
+                DatabaseContract.UserTable.COLUMN_EMAIL + ", " +
+                DatabaseContract.UserTable.COLUMN_PASSWORD +") VALUES('" +
+                username + "', '" + email + "', '" + password + "');";
         db.execSQL(sql);
     }
 
@@ -51,12 +53,12 @@ public class UserDAO {
 
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow("userId"));
-                String username = cursor.getString(cursor.getColumnIndexOrThrow("username"));
-                String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
-                String password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-                String role = cursor.getString(cursor.getColumnIndexOrThrow("role"));
-                String createdAt = cursor.getString(cursor.getColumnIndexOrThrow("createdAt"));
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_ID));
+                String username = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_USERNAME));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_EMAIL));
+                String password = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_PASSWORD));
+                String role = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_ROLE));
+                String createdAt = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_CREATED_AT));
 
                 userList.add(new User(id, username, email, password, role, createdAt));
             } while (cursor.moveToNext());
@@ -67,14 +69,13 @@ public class UserDAO {
     }
 
     // UPDATE - sửa user
-    public void updateUser(int userId, String username, String email, String password, String role) {
+    public void updateUser(int userId, String username, String email, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String sql = "UPDATE " + DatabaseContract.UserTable.TABLE_NAME +
-                " SET username='" + username +
-                "', email='" + email +
-                "', password='" + password +
-                "', role='" + role +
-                "' WHERE userId=" + userId + ";";
+                " SET " + DatabaseContract.UserTable.COLUMN_USERNAME + "='" + username +
+                "', " + DatabaseContract.UserTable.COLUMN_EMAIL + "='" + email +
+                "', " + DatabaseContract.UserTable.COLUMN_PASSWORD + "='" + password +
+                "' WHERE " + DatabaseContract.UserTable.COLUMN_ID + "=" + userId + ";";
         db.execSQL(sql);
     }
 
@@ -83,8 +84,8 @@ public class UserDAO {
         int isDeleted = 1;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String sql = "UPDATE " + DatabaseContract.UserTable.TABLE_NAME +
-                " SET isDeleted='" + isDeleted +
-                "' WHERE userId=" + userId + ";";
+                " SET " + DatabaseContract.UserTable.COLUMN_IS_DELETED + "='" + isDeleted +
+                "' WHERE " + DatabaseContract.UserTable.COLUMN_ID + "=" + userId + ";";
         db.execSQL(sql);
     }
 
@@ -92,15 +93,16 @@ public class UserDAO {
     public User login(String username, String password) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sql = "SELECT * FROM " + DatabaseContract.UserTable.TABLE_NAME +
-                " WHERE username='" + username + "' AND password='" + password + "' LIMIT 1;";
+                " WHERE " + DatabaseContract.UserTable.COLUMN_USERNAME + "='" + username +
+                "' AND " + DatabaseContract.UserTable.COLUMN_PASSWORD + "='" + password + "' LIMIT 1;";
         Cursor cursor = db.rawQuery(sql, null);
         User user = null;
 
         if (cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow("userId"));
-            String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
-            String role = cursor.getString(cursor.getColumnIndexOrThrow("role"));
-            String createdAt = cursor.getString(cursor.getColumnIndexOrThrow("createdAt"));
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_ID));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_EMAIL));
+            String role = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_ROLE));
+            String createdAt = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_CREATED_AT));
 
             user = new User(id, username, email, password, role, createdAt);
         }

@@ -97,15 +97,15 @@ public class ExpenseDAO {
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToFirst()) {
             do {
-                int expenseId = cursor.getInt(cursor.getColumnIndexOrThrow("expenseId"));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
-                double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
-                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
-                String startDate = cursor.getString(cursor.getColumnIndexOrThrow("startDate"));
-                String endDate = cursor.getString(cursor.getColumnIndexOrThrow("endDate"));
-                int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow("categoryId"));
-                String categoryName = cursor.getString(cursor.getColumnIndexOrThrow("categoryName"));
-                int isRecurring = cursor.getInt(cursor.getColumnIndexOrThrow("isRecurring"));
+                int expenseId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_ID));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_DESCRIPTION));
+                double amount = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_AMOUNT));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_DATE));
+                String startDate = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_START_DATE));
+                String endDate = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_END_DATE));
+                int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_CATEGORY_ID));
+                String categoryName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.CategoryTable.COLUMN_NAME));
+                int isRecurring = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_IS_RECURRING));
 
                 expenseList.add(new Expense(expenseId, description, amount, date, startDate, endDate,categoryId, categoryName, isRecurring));
             } while (cursor.moveToNext());
@@ -145,15 +145,15 @@ public class ExpenseDAO {
 
         if (cursor.moveToFirst()) {
             do {
-                int expenseId = cursor.getInt(cursor.getColumnIndexOrThrow("expenseId"));
-                String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
-                double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
-                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
-                String startDate = cursor.getString(cursor.getColumnIndexOrThrow("startDate"));
-                String endDate = cursor.getString(cursor.getColumnIndexOrThrow("endDate"));
-                int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow("categoryId")); // nội bộ
-                String categoryName = cursor.getString(cursor.getColumnIndexOrThrow("categoryName")); // hiển thị
-                int isRecurring = cursor.getInt(cursor.getColumnIndexOrThrow("isRecurring"));
+                int expenseId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_ID));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_DESCRIPTION));
+                double amount = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_AMOUNT));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_DATE));
+                String startDate = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_START_DATE));
+                String endDate = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_END_DATE));
+                int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_CATEGORY_ID));
+                String categoryName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.CategoryTable.COLUMN_NAME));
+                int isRecurring = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_IS_RECURRING));
 
                 expenseList.add(new Expense(expenseId, description, amount, date, startDate, endDate, categoryId, categoryName, isRecurring));
             } while (cursor.moveToNext());
