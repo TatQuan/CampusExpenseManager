@@ -5,18 +5,6 @@
     android:layout_height="match_parent"
     android:background="#FFF5F7">
 
-    <!-- App Bar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:background="#E91E63"
-        app:title="Edit Profile"
-        app:titleTextColor="#FFFFFF"
-        app:titleCentered="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Giao diện đăng nhập -->
     <LinearLayout

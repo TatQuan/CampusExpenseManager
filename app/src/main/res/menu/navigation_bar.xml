@@ -7,12 +7,12 @@
         android:title="Home" />
 
     <item
-        android:id="@+id/nav_profile"
+        android:id="@+id/nav_category"
         android:icon="@drawable/ic_category"
         android:title="Category" />
 
     <item
-        android:id="@+id/nav_diary"
+        android:id="@+id/nav_addexpense"
         android:icon="@drawable/ic_addexpense"
         android:title="Add Expense" />
 
@@ -22,7 +22,7 @@
         android:title="Notification" />
 
     <item
-        android:id="@+id/nav_account"
+        android:id="@+id/nav_profile"
         android:icon="@drawable/ic_user"
         android:title="Profile" />
 

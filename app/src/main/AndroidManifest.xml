@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusExpenseManager">
         <activity
+            android:name=".view.AddExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.MonthlyReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.CategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.HomeActivity"
             android:exported="false" />
         <activity

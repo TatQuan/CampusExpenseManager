@@ -5,23 +5,11 @@
     android:layout_height="match_parent"
     android:background="#FFF5F7">
 
-    <!-- Thanh tiêu đề -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#E91E63"
-        app:title="Set Budget"
-        app:titleTextColor="#FFFFFF"
-        app:titleCentered="true"
-        android:gravity="center" />
-
     <!-- Form nội dung -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@id/toolbar"
         android:padding="16dp"
         android:background="#FFF5F7">
 

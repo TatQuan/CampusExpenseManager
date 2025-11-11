@@ -5,17 +5,6 @@
     android:layout_height="match_parent"
     android:background="#FFF5F7">
 
-    <!-- App Bar -->
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#E91E63"
-        app:title="Add Expense"
-        app:titleTextColor="#FFFFFF"
-        android:titleTextColor="@android:color/white"
-        android:gravity="center"
-        app:titleCentered="true" />
-
     <!-- Toàn bộ nội dung cuộn -->
     <ScrollView
         android:id="@+id/scrollView"
