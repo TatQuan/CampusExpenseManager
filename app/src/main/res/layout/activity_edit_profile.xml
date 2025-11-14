@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FFF5F7">
 
-
-    <!-- Giao diện đăng nhập -->
+    <!-- Giao diện hồ sơ -->
     <LinearLayout
         android:id="@+id/contentLayout"
         android:layout_width="0dp"
@@ -14,7 +13,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:padding="24dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -35,15 +34,10 @@
                 android:src="@drawable/ic_profile"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Tiêu đề -->
-            <TextView
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Edit Profile"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="#000"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"/>
 
             <!-- Ô username -->
             <EditText
@@ -62,12 +56,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
-                android:inputType="textPassword"
                 android:drawablePadding="8dp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_border_black"
                 android:layout_marginBottom="30dp" />
-
             <!-- Nút enter -->
             <Button
                 android:id="@+id/btn_enter"
@@ -81,7 +73,6 @@
                 android:textAllCaps="false"
                 android:layout_gravity="center"
                 android:layout_marginBottom="12dp" />
-
         </LinearLayout>
     </LinearLayout>
 

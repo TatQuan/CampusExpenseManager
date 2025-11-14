@@ -111,4 +111,27 @@ public class UserDAO {
         return user;
 
     }
+
+    //GET USER BY NAME
+    public User getUserByName(String username){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String sql = "SELECT * FROM " + DatabaseContract.UserTable.TABLE_NAME +
+                " WHERE " + DatabaseContract.UserTable.COLUMN_USERNAME + "= '" +  username + "';";
+        Cursor cursor = db.rawQuery(sql, null);
+        User user = null;
+
+        if (cursor.moveToFirst()) {
+            int userId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_USERNAME));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_EMAIL));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_PASSWORD));
+            String role = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_ROLE));
+            String createdAt = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.UserTable.COLUMN_CREATED_AT));
+            user = new User(userId, username, email, password, role, createdAt);
+            cursor.close();
+            return user;
+        } else {
+            cursor.close();
+            return null;
+        }
+    }
 }

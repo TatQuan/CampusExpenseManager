@@ -2,6 +2,7 @@ package com.example.campusexpensemanager.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -23,6 +24,7 @@ import com.example.campusexpensemanager.Data.DatabaseContract;
 import com.example.campusexpensemanager.Data.dao.UserDAO;
 import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.models.User;
+import com.example.campusexpensemanager.session.Session;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,6 +36,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText edtPassword;
     UserDAO userDAO;
     User user;
+
+    SharedPreferences prefs;
+
     TextView registerLink;
 
 
@@ -78,12 +83,14 @@ public class LoginActivity extends AppCompatActivity {
             try{
                 user = userDAO.login(username, password);
                 if (user != null) {
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("USERNAME", username);
-                    intent.putExtra("PASSWORD", password);
-                    intent.putExtra("EMAIL", user.getEmail());
-                    intent.putExtra("USER_ID", user.getUserId());
-                    startActivity(intent);
+                    Session session = new Session(LoginActivity.this);
+                    session.saveUserSession(
+                            user.getUserId(),
+                            username,
+                            user.getEmail()
+                    );
+
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     finish();
                 } else {
                     Toast toast = Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT);
