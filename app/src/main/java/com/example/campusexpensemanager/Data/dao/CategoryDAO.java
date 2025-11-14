@@ -95,5 +95,35 @@ public class CategoryDAO {
         db.close();
     }
 
+    //GET CATEGORY BY ID - lấy category theo id
+    public Category getCategoryById(int id) {
+        SQLiteDatabase db = dbhelper.getReadableDatabase();
+        String[] columns = {
+                DatabaseContract.CategoryTable.COLUMN_ID,
+                DatabaseContract.CategoryTable.COLUMN_NAME,
+                DatabaseContract.CategoryTable.COLUMN_DESCRIPTION,
+                DatabaseContract.CategoryTable.COLUMN_ICON_NAME
+        };
 
+        Cursor cursor = db.query(
+                DatabaseContract.CategoryTable.TABLE_NAME,
+                columns,
+                DatabaseContract.CategoryTable.COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)},
+                null, null, null
+        );
+
+        Category category = null;
+            if (cursor.moveToFirst()) {
+                int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.CategoryTable.COLUMN_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.CategoryTable.COLUMN_NAME));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.CategoryTable.COLUMN_DESCRIPTION));
+                String iconName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.CategoryTable.COLUMN_ICON_NAME));
+                category = new Category(categoryId, name, description, iconName);
+            }
+
+            cursor.close();
+            db.close();
+            return category;
+        }
 }

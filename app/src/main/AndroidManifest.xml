@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusExpenseManager">
         <activity
+            android:name=".view.BudgetActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.AddExpenseActivity"
             android:exported="false" />
         <activity

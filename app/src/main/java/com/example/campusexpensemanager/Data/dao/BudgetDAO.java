@@ -77,4 +77,26 @@ public class BudgetDAO {
         db.update(DatabaseContract.BudgetTable.TABLE_NAME, values,
                 DatabaseContract.BudgetTable.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
     }
+
+    //GET BUDGET BY CATEGORY ID
+    public Budget getBudgetByCategoryId(int categoryId){
+        SQLiteDatabase db = dbhelper.getReadableDatabase();
+        String sql =
+                "SELECT * FROM " + DatabaseContract.BudgetTable.TABLE_NAME + " " +
+                        "WHERE " + DatabaseContract.BudgetTable.COLUMN_CATEGORY_ID + " = ? ";
+
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(categoryId)});
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_ID));
+            int userId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_USER_ID));
+            double budgetAmount = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_BUDGET_AMOUNT));
+            double remainingBudget = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_REMAINING_BUDGET));
+            int month = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_MONTH));
+            int year = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_YEAR));
+
+            return new Budget(id, userId, categoryId, budgetAmount, remainingBudget, month, year);
+        } else {
+            return null;
+        }
+    }
 }

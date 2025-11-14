@@ -86,7 +86,7 @@
                 android:nestedScrollingEnabled="true"
                 android:padding="8dp"
                 tools:layoutManager="GridLayoutManager"
-                tools:listitem="@layout/recycler_view_item"
+                tools:listitem="@layout/recycler_view_category_custom"
                 tools:spanCount="5" />
 
             <Button
