@@ -11,15 +11,24 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.campusexpensemanager.R;
+import com.example.campusexpensemanager.session.Session;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+
+        Session session = new Session(this);
+
+        String username = session.getUsername();
+        String email = session.getEmail();
+        int userId = session.getUserId();
+
 
         //Hide action bar
         if (getSupportActionBar() != null) {
@@ -45,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayout btnProfile = findViewById(R.id.btn_profile);
         btnProfile.setOnClickListener(view -> {
             startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+
         });
 
         LinearLayout btnMonthlyReport = findViewById(R.id.btn_monthly_report);
@@ -70,7 +80,6 @@ public class HomeActivity extends AppCompatActivity {
 
             } else if (id == R.id.nav_profile) {
                 startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
-
             }
             return true;
         });

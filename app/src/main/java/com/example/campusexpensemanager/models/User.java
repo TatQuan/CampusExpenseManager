@@ -3,19 +3,19 @@ package com.example.campusexpensemanager.models;
 public class User {
     private int userId;
     private String username;
-    private String password;
     private String email;
     private String role;
     private String createdAt;
+    private String password;
 
     // Constructor, getters, setters
-    public User(int userId, String username, String password, String email, String role, String createdAt) {
+    public User(int userId, String username, String email, String role, String createdAt, String password) {
         this.userId = userId;
         this.username = username;
-        this.password = password;
         this.email = email;
         this.role = role;
         this.createdAt = createdAt;
+        this.password = password;
     }
 
     // Getter and setter
