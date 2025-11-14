@@ -3,7 +3,7 @@ package com.example.campusexpensemanager.Data;
 public class DatabaseContract {
     private DatabaseContract() {}
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "CampusExpenseManager.db";
 
     //User table
@@ -36,6 +36,7 @@ public class DatabaseContract {
         public static final String COLUMN_ID = "category_id";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_ICON_NAME = "icon_name";
         public static final String COLUMN_IS_DELETED = "is_deleted";
 
         public static final String CREATE_TABLE =
@@ -43,8 +44,10 @@ public class DatabaseContract {
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_NAME + " TEXT NOT NULL," +
                 COLUMN_DESCRIPTION + " TEXT," +
+                COLUMN_ICON_NAME + " TEXT," + // tên icon
                 COLUMN_IS_DELETED + " INTEGER DEFAULT 0" +
                 ");";
+
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
@@ -72,7 +75,7 @@ public class DatabaseContract {
                 COLUMN_USER_ID + " INTEGER," +
                 COLUMN_IS_RECURRING + " INTEGER DEFAULT 0," + // khoản chi định kỳ, 0=false, 1=true
                 "FOREIGN KEY(" + COLUMN_CATEGORY_ID + ") REFERENCES " +
-                CategoryTable.TABLE_NAME + "(" + CategoryTable.COLUMN_ID + ")" +
+                CategoryTable.TABLE_NAME + "(" + CategoryTable.COLUMN_ID + ")," +
                 "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " +
                 UserTable.TABLE_NAME + "(" + CategoryTable.COLUMN_ID + ")" +
                 ");";
