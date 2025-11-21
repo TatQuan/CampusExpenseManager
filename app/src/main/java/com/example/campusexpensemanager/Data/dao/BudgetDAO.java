@@ -33,6 +33,33 @@ public class BudgetDAO {
         db.insert(DatabaseContract.BudgetTable.TABLE_NAME, null, values);
     }
 
+    //GET ALL BUDGETS
+    public List<Budget> getAllBudgets() {
+        List<Budget> budgetList = new ArrayList<>();
+        SQLiteDatabase db = dbhelper.getReadableDatabase();
+        String sql =
+                "SELECT * FROM " + DatabaseContract.BudgetTable.TABLE_NAME + " " +
+                "ORDER BY " + DatabaseContract.BudgetTable.COLUMN_CATEGORY_ID + " ASC";
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_ID));
+                int userId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_USER_ID));
+                int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_CATEGORY_ID));
+                double budgetAmount = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_BUDGET_AMOUNT));
+                double remainingBudget = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_REMAINING_BUDGET));
+                int month = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_MONTH));
+                int year = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_YEAR));
+                budgetList.add(new Budget(id, userId, categoryId, budgetAmount, remainingBudget, month, year));
+                } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return budgetList;
+    }
+
+
+
     //GET BUDGET - lấy danh sách chi tiêu theo tháng
     public List<Budget> getBudgetsByMonth(int userId, int month, int year) {
         List<Budget> budgetList = new ArrayList<>();

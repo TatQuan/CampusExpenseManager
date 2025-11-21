@@ -24,10 +24,17 @@ public class ExpenseDAO {
     }
 
     //ADD EXPENSE - Thêm chi tiêu
-    public void addExpense(String description, double amount, String date, String startDate, String endDate, int categoryId, int userId, boolean isRecurring) {
+    public void addExpense(String description, double amount, String date, String startDate, String endDate, int categoryId, int userId, int isRecurring) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String sql = "INSERT INTO " + DatabaseContract.ExpenseTable.TABLE_NAME +
-                " (description, amount, date, startDate, endDate, categoryId, userId, isRecurring) VALUES('" +
+                " (" + DatabaseContract.ExpenseTable.COLUMN_DESCRIPTION + ", "
+                + DatabaseContract.ExpenseTable.COLUMN_AMOUNT + ", "
+                + DatabaseContract.ExpenseTable.COLUMN_DATE + ", "
+                + DatabaseContract.ExpenseTable.COLUMN_START_DATE + ", "
+                + DatabaseContract.ExpenseTable.COLUMN_END_DATE + ", "
+                + DatabaseContract.ExpenseTable.COLUMN_CATEGORY_ID + ", "
+                + DatabaseContract.ExpenseTable.COLUMN_USER_ID + ", "
+                + DatabaseContract.ExpenseTable.COLUMN_IS_RECURRING + ") VALUES('" +
                 description + "', '" + amount + "', '" + date + "', '" + startDate + "', '" + endDate + "', '" + categoryId + "', '" + userId + "', '" + isRecurring + "');";
         db.execSQL(sql);
     }

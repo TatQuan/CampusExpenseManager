@@ -6,12 +6,10 @@
     android:layout_height="match_parent"
     android:background="#FFF5F7">
 
-    <!-- Toàn bộ nội dung cuộn -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomNavigationView">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,18 +28,38 @@
                 android:padding="10dp"
                 android:textColor="#000" />
 
-            <!-- Chi tiêu định kì (ô mới) -->
+            <!-- Checkbox cho chi tiêu định kỳ -->
+            <CheckBox
+                android:id="@+id/checkboxRecurring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recurring"
+                android:textColor="#000"
+                android:layout_marginTop="8dp" />
+
+            <!-- Start Date (ẩn khi không chọn Recurring) -->
             <EditText
-                android:id="@+id/et_recurring"
+                android:id="@+id/et_start_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Recurring Expense"
+                android:hint="Start Date"
                 android:layout_marginTop="12dp"
-                android:focusable="false"
-                android:clickable="true"
                 android:background="@android:drawable/edit_text"
                 android:padding="10dp"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:visibility="gone" />
+
+            <!-- End Date (ẩn khi không chọn Recurring) -->
+            <EditText
+                android:id="@+id/et_end_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="End Date"
+                android:layout_marginTop="12dp"
+                android:background="@android:drawable/edit_text"
+                android:padding="10dp"
+                android:textColor="#000"
+                android:visibility="gone" />
 
             <!-- Ghi chú -->
             <EditText
@@ -74,7 +92,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="Category"
                 android:textColor="#000"
-                android:textSize="22dp"
+                android:textSize="22sp"
                 android:textStyle="bold"/>
 
             <!-- Grid các danh mục -->
@@ -89,6 +107,7 @@
                 tools:listitem="@layout/recycler_view_category_custom"
                 tools:spanCount="5" />
 
+            <!-- Nút thêm chi tiêu -->
             <Button
                 android:id="@+id/btn_add_expense"
                 android:layout_width="wrap_content"
@@ -106,15 +125,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Thanh điều hướng dưới cùng -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/navigation_bar" />
 </RelativeLayout>

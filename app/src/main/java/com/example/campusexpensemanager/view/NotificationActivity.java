@@ -10,12 +10,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.campusexpensemanager.R;
 
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
+        setActivityLayout(R.layout.activity_notification);
     }
 }

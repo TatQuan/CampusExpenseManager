@@ -7,9 +7,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.campusexpensemanager.R;
-import com.example.campusexpensemanager.session.Session;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
     TextView tvUsername, tvEmail;
     Button btnEditProfile;
@@ -18,18 +17,17 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setActivityLayout(R.layout.activity_profile);
 
         tvUsername = findViewById(R.id.tv_edit_title);
         tvEmail = findViewById(R.id.et_email);
-        Session session = new Session(this);
 
-        String username = session.getUsername();
-        String email = session.getEmail();
-        int userId = session.getUserId();
+        String username = getUsername();
+        String email = getEmail();
+        int userId = getUserId();
 
 
-        tvUsername.setText(session.getUsername());
-        tvEmail.setText(session.getEmail());
+        tvUsername.setText(username);
+        tvEmail.setText(email);
     }
 }

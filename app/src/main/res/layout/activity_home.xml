@@ -9,9 +9,9 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomNavigationView">
+        android:layout_height="match_parent">
 
+        <!-- Nội dung trong ScrollView -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,6 +82,29 @@
 
                 <!-- Các item -->
                 <!-- Add Expense -->
+                <LinearLayout
+                    android:id="@+id/btn_set_budget"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_budget" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:text="Set Budget"
+                        android:textColor="#E91E63"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/btn_add_expense"
                     android:layout_width="0dp"
@@ -293,16 +316,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Thanh điều hướng dưới cùng -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
-        android:background="#FFFFFF"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/navigation_bar" />
 </RelativeLayout>

@@ -11,30 +11,23 @@
       android:layout_width="50dp"
       android:layout_height="50dp"
       tools:src="@drawable/ic_default_category"/>
+
   <TextView
       android:id="@+id/tvCategory"
-      android:layout_width="0dp"
+      android:layout_width="199dp"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      android:padding="5dp"
       android:layout_weight="1"
+      android:padding="5dp"
       tools:text="name" />
 
   <TextView
       android:id="@+id/tvBudget"
-      android:layout_width="wrap_content"
+      android:layout_width="138dp"
       android:layout_height="wrap_content"
-      android:padding="5dp"
-      android:gravity="end"
       android:layout_gravity="center"
-      tools:text="0" />
+      android:gravity="end"
+      android:padding="5dp"
+      tools:text="0 VND" />
 
-  <TextView
-      android:id="@+id/tvSpent"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="5dp"
-      android:gravity="end"
-      android:layout_gravity="center"
-      tools:text="VND" />
 </LinearLayout>

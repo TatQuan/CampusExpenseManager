@@ -6,23 +6,12 @@
     android:background="#FFF5F7">
 
     <!-- App Bar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#E91E63"
-        app:title="View Expense by Category"
-        app:titleTextColor="#FFFFFF"
-        app:titleCentered="true"
-        android:gravity="center" />
 
     <!-- ScrollView chứa toàn nội dung -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:layout_above="@id/bottomNavigationView">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,6 +81,13 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expense"
+                android:textColor="#000"
+                android:textSize="20sp"/>
+
             <!-- 🔹 CARDVIEW chứa danh sách chi tiêu -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -107,6 +103,7 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
+
                     <!-- 🔹 RecyclerView show danh sách chi tiêu -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_expense_categories"
@@ -119,17 +116,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <!-- 🔹 Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/navigation_bar" />
 
 </RelativeLayout>

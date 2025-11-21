@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ public class CategoryBudgetAdapter extends RecyclerView.Adapter<CategoryBudgetAd
     private Context context;
     private List<Category> categoryList;
     private List<Budget> budgetList;
+    private int userId; //Nạp user vào để tìm budget theo userId
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -27,10 +29,12 @@ public class CategoryBudgetAdapter extends RecyclerView.Adapter<CategoryBudgetAd
     }
 
     public CategoryBudgetAdapter(Context context, List<Category> categoryList,
-                                 List<Budget> budgetList, OnItemClickListener listener) {
+                                 List<Budget> budgetList, int userId,
+                                 OnItemClickListener listener) {
         this.context = context;
         this.categoryList = categoryList;
         this.budgetList = budgetList;
+        this.userId = userId;
         this.listener = listener;
     }
 
@@ -46,10 +50,10 @@ public class CategoryBudgetAdapter extends RecyclerView.Adapter<CategoryBudgetAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category category = categoryList.get(position);
 
-        // Tìm budget theo categoryId
+        // Tìm budget theo categoryId và userId
         Budget matchedBudget = null;
         for (Budget b : budgetList) {
-            if (b.getCategoryId() == category.getId()) {
+            if (b.getCategoryId() == category.getId() && b.getUserId() == userId) {
                 matchedBudget = b;
                 break;
             }
@@ -58,9 +62,9 @@ public class CategoryBudgetAdapter extends RecyclerView.Adapter<CategoryBudgetAd
         holder.tvCategoryName.setText(category.getName());
 
         if (matchedBudget != null) {
-            holder.tvBudgetAmount.setText("Budget: " + matchedBudget.getBudgetAmount());
+            holder.tvBudgetAmount.setText(String.valueOf(matchedBudget.getBudgetAmount()) + " VND");
         } else {
-            holder.tvBudgetAmount.setText("Budget: Chưa đặt");
+            holder.tvBudgetAmount.setText("0 VND");
         }
 
         Budget finalBudget = matchedBudget;
@@ -70,6 +74,9 @@ public class CategoryBudgetAdapter extends RecyclerView.Adapter<CategoryBudgetAd
                 listener.onItemClick(category, finalBudget);
             }
         });
+
+        int iconResId = category.getIconResId(context);
+        holder.icCategory.setImageResource(iconResId != 0 ? iconResId : R.drawable.ic_default_category);
     }
 
     @Override
@@ -78,13 +85,14 @@ public class CategoryBudgetAdapter extends RecyclerView.Adapter<CategoryBudgetAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView tvCategoryName, tvBudgetAmount;
+        ImageView icCategory;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvCategoryName = itemView.findViewById(R.id.tvCategoryName);
+            tvCategoryName = itemView.findViewById(R.id.tvCategory);
             tvBudgetAmount = itemView.findViewById(R.id.tvBudget);
+            icCategory = itemView.findViewById(R.id.icCategory);
         }
     }
 }

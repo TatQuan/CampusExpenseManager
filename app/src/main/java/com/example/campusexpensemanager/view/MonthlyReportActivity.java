@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.campusexpensemanager.R;
 
-public class MonthlyReportActivity extends AppCompatActivity {
+public class MonthlyReportActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

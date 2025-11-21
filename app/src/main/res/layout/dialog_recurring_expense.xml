@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Ngày bắt đầu -->
+    <EditText
+        android:id="@+id/et_start_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Start Date"
+        android:background="@android:drawable/edit_text"
+        android:padding="10dp"
+        android:textColor="#000"
+        android:focusable="false"
+        android:clickable="true" />
+
+    <!-- Ngày kết thúc -->
+    <EditText
+        android:id="@+id/et_end_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="End Date"
+        android:background="@android:drawable/edit_text"
+        android:padding="10dp"
+        android:textColor="#000"
+        android:focusable="false"
+        android:clickable="true" />
+
+    <!-- Số tiền chi tiêu -->
+    <EditText
+        android:id="@+id/et_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Amount"
+        android:background="@android:drawable/edit_text"
+        android:padding="10dp"
+        android:textColor="#000" />
+
+    <!-- Mô tả -->
+    <EditText
+        android:id="@+id/et_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:background="@android:drawable/edit_text"
+        android:padding="10dp"
+        android:textColor="#000" />
+
+    <!-- Lưu chi tiêu định kỳ -->
+    <Button
+        android:id="@+id/btn_save_recurring_expense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#E91E63"
+        android:text="Save Recurring Expense"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+</LinearLayout>
