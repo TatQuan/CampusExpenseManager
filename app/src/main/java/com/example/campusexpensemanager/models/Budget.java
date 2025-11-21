@@ -1,6 +1,6 @@
 package com.example.campusexpensemanager.models;
 
-public class Budget {
+public class    Budget {
     private int id;
     private int userId;
     private int categoryId;
