@@ -15,13 +15,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1; // tăng phiên bản vì thêm cột role
 
     // Tên bảng
-    public static final String TABLE_USER = "User";
-    public static final String TABLE_CATEGORY = "Category";
-    public static final String TABLE_EXPENSE = "Expense";
-    public static final String TABLE_BUDGET = "Budget";
-    public static final String TABLE_REPORT = "Report";
-    public static final String TABLE_NOTIFICATION = "Notification";
-    public static final String TABLE_MONTHLY_REPORT = "MonthlyReport";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,10 +31,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //Insert default database here
         InserAataCategory(db);
+        insertUser(db);
+        insertDataExpense(db);
+        insertDataBudget(db);
     }
 
     public void InserAataCategory(SQLiteDatabase db){
-        db.execSQL("INSERT INTO " + TABLE_CATEGORY + " (" +
+        db.execSQL("INSERT INTO " + DatabaseContract.CategoryTable.TABLE_NAME + " (" +
                 DatabaseContract.CategoryTable.COLUMN_NAME + ", " +
                 DatabaseContract.CategoryTable.COLUMN_DESCRIPTION + ", " +
                 DatabaseContract.CategoryTable.COLUMN_ICON_NAME + ") " +
@@ -55,16 +51,104 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "('Cosnetics', 'Cosnetics', 'ic_cosnetics');");
     }
 
+    public void insertUser(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO " + DatabaseContract.UserTable.TABLE_NAME + " (" +
+                DatabaseContract.UserTable.COLUMN_USERNAME + ", " +
+                DatabaseContract.UserTable.COLUMN_PASSWORD + ", " +
+                DatabaseContract.UserTable.COLUMN_EMAIL + ", " +
+                DatabaseContract.UserTable.COLUMN_ROLE + ") " +
+                "VALUES ('admin', 'admin1', 'admin@gmail.com', 'admin');");
+    }
+
+    public void insertDataExpense(SQLiteDatabase db) {
+
+        db.execSQL("INSERT INTO Expense (description, amount, date, start_date, end_date, categoryId, userId, isRecurring) VALUES " +
+
+                /* ------------------- MẪU CHI TIÊU 1 LẦN ------------------- */
+
+                // Food - tháng 1
+                "('Breakfast Bánh mì', 35000, '2025-01-05', NULL, NULL, 1, 1, 0)," +
+                "('Lunch Phở', 55000, '2025-01-10', NULL, NULL, 1, 1, 0)," +
+
+                // Transportation - tháng 1
+                "('Bus ticket', 12000, '2025-01-02', NULL, NULL, 2, 1, 0)," +
+                "('Train ticket', 20000, '2025-01-25', NULL, NULL, 2, 1, 0)," +
+
+                // Healthcare - tháng 2
+                "('Buy medicine', 90000, '2025-02-14', NULL, NULL, 3, 1, 0)," +
+
+                // Education - tháng 2
+                "('Buy notebook', 15000, '2025-02-09', NULL, NULL, 4, 1, 0)," +
+
+
+                /* ------------------- MẪU CHI TIÊU ĐỊNH KỲ ------------------- */
+
+                // Rent (tiền nhà) - recurring mỗi tháng
+                "('Monthly Rent', 3500000, '2025-01-01', '2025-01-01', '2025-12-31', 7, 1, 1)," +
+
+                // Electricity bill mỗi tháng
+                "('Electricity Bill', 750000, '2025-01-15', '2025-01-01', '2025-12-31', 6, 1, 1)," +
+
+                // Gym membership mỗi tháng
+                "('Gym Membership', 500000, '2025-01-03', '2025-01-01', '2025-06-30', 3, 1, 1)," +
+
+
+                /* ------------------- THÊM VÀI MẪU CHI TIÊU NHIỀU THÁNG ------------------- */
+
+                // Tháng 3
+                "('Lunch cơm gà', 45000, '2025-03-07', NULL, NULL, 1, 1, 0)," +
+                "('Grab bike', 22000, '2025-03-20', NULL, NULL, 2, 1, 0)," +
+
+                // Tháng 4
+                "('Buy T-shirt', 120000, '2025-04-11', NULL, NULL, 5, 1, 0)," +
+
+                // Tháng 5
+                "('Cosmetics cream', 85000, '2025-05-10', NULL, NULL, 8, 1, 0);"
+        );
+    }
+
+    public void insertDataBudget(SQLiteDatabase db) {
+
+        db.execSQL("INSERT INTO Budget (userId, categoryId, budgetAmount, remainingBudget, month, year, isDeleted) VALUES " +
+
+                // -------- Tháng 1/2025 --------
+                "(1, 1, 2000000, 2000000, 1, 2025, 0)," +   // Food
+                "(1, 2, 500000, 500000, 1, 2025, 0)," +     // Transportation
+                "(1, 7, 3500000, 3500000, 1, 2025, 0)," +   // Rent
+                "(1, 6, 800000, 800000, 1, 2025, 0)," +     // Electricity
+
+                // -------- Tháng 2/2025 --------
+                "(1, 1, 1800000, 1800000, 2, 2025, 0)," +   // Food
+                "(1, 3, 400000, 400000, 2, 2025, 0)," +     // Healthcare
+                "(1, 4, 300000, 300000, 2, 2025, 0)," +     // Education
+
+                // -------- Tháng 3/2025 --------
+                "(1, 1, 1500000, 1500000, 3, 2025, 0)," +
+                "(1, 2, 600000, 600000, 3, 2025, 0)," +
+                "(1, 5, 500000, 500000, 3, 2025, 0)," +
+
+                // -------- Tháng 4/2025 --------
+                "(1, 1, 2000000, 2000000, 4, 2025, 0)," +
+                "(1, 8, 300000, 300000, 4, 2025, 0)," +
+
+                // -------- Tháng 12/2024 --------
+                "(1, 1, 2200000, 2200000, 12, 2024, 0)," +
+                "(1, 7, 3500000, 3500000, 12, 2024, 0);"
+
+        );
+    }
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Xóa bảng cũ và tạo lại
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORT);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTIFICATION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MONTHLY_REPORT);
+        db.execSQL(DatabaseContract.UserTable.DROP_TABLE);
+        db.execSQL(DatabaseContract.CategoryTable.DROP_TABLE);
+        db.execSQL(DatabaseContract.ExpenseTable.DROP_TABLE);
+        db.execSQL(DatabaseContract.BudgetTable.DROP_TABLE);
+        db.execSQL(DatabaseContract.MonthlyReportTable.DROP_TABLE);
+        db.execSQL(DatabaseContract.NotificationTable.DROP_TABLE);
         onCreate(db);
 
         // Không xóa bảng, chỉ sửa bản và tăng version

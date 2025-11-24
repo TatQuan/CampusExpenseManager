@@ -17,7 +17,6 @@ import com.example.campusexpensemanager.Data.dao.CategoryDAO;
 import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.models.Category;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -26,23 +25,21 @@ public class SetBudgetActivity extends AppCompatActivity {
 
     Spinner spCategory;
     EditText etBudgetAmount;
-    EditText etStartDate;
-    EditText etEndDate;
+    EditText etYear;
+    EditText etMonth;
 
     List<Category> categories;
     CategoryDAO categoryDAO;
 
-    // Initialize Calendar instance for date picking
+    // Calendar để lấy ngày hiện tại và dùng cho DatePickerDialog
     Calendar calendar = Calendar.getInstance();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_budget);
 
-        //Setup toolbar
-        // Set action bar title
+        // Setup toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Set Budget");
@@ -50,15 +47,18 @@ public class SetBudgetActivity extends AppCompatActivity {
 
         spCategory = findViewById(R.id.sp_category);
         etBudgetAmount = findViewById(R.id.et_budget_amount);
-        etStartDate = findViewById(R.id.et_start_date);
-        etEndDate = findViewById(R.id.et_end_date);
+        etMonth = findViewById(R.id.et_month);
+        etYear = findViewById(R.id.et_year);
 
         // Get data category
         categoryDAO = new CategoryDAO(this);
         categories = categoryDAO.getAllCategories();
 
         // Drop-down list for category selection
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item
+        );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         for (Category category : categories) {
@@ -67,68 +67,109 @@ public class SetBudgetActivity extends AppCompatActivity {
 
         spCategory.setAdapter(adapter);
 
-        // Set date pickers for start and end date EditTexts
-        etStartDate.setOnClickListener(v -> showDatePickerDialog(etStartDate));
-        etStartDate.setText(dateFormat.format(calendar.getTime()));
-        etEndDate.setOnClickListener(v -> showDatePickerDialog(etEndDate));
-        Calendar endCal = (Calendar) calendar.clone();
-        endCal.add(Calendar.MONTH, 1);
-        etEndDate.setText(dateFormat.format(endCal.getTime()));
+        // Set mặc định năm / tháng hiện tại
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1; // 0–11 -> +1
 
+        etYear.setText(String.valueOf(currentYear));
+        etMonth.setText(String.format(Locale.getDefault(), "%02d", currentMonth));
 
-        // Save button logic (TODO)
+        // Chọn năm bằng DatePickerDialog (chỉ lấy year)
+        etYear.setOnClickListener(v -> showYearPickerDialog());
+
+        // Chọn tháng bằng DatePickerDialog (chỉ lấy month)
+        etMonth.setOnClickListener(v -> showMonthPickerDialog());
+
+        // Save button logic
         Button btnSaveBudget = findViewById(R.id.btn_save_budget);
         btnSaveBudget.setOnClickListener(v -> {
-            String startDateText = etStartDate.getText().toString();
-            String endDateText = etEndDate.getText().toString();
-            String budgetAmountText = etBudgetAmount.getText().toString();
+            String budgetAmountText = etBudgetAmount.getText().toString().trim();
+            String yearText = etYear.getText().toString().trim();
+            String monthText = etMonth.getText().toString().trim();
 
-            if (startDateText.isEmpty() || endDateText.isEmpty() || budgetAmountText.isEmpty()) {
-                // Hiển thị thông báo nếu người dùng chưa nhập đầy đủ thông tin
+            if (budgetAmountText.isEmpty() || yearText.isEmpty() || monthText.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Chuyển đổi số tiền ngân sách thành kiểu double
-            double budgetAmount = Double.parseDouble(budgetAmountText);
+            double budgetAmount;
+            int selectedYear;
+            int selectedMonth;
+
+            try {
+                budgetAmount = Double.parseDouble(budgetAmountText);
+                selectedYear = Integer.parseInt(yearText);
+                selectedMonth = Integer.parseInt(monthText);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Invalid number format.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             // Lấy danh mục được chọn
             int selectedCategoryPosition = spCategory.getSelectedItemPosition();
+            if (selectedCategoryPosition < 0 || selectedCategoryPosition >= categories.size()) {
+                Toast.makeText(this, "Please select a category.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Category selectedCategory = categories.get(selectedCategoryPosition);
 
-            // Phân tích tháng và năm từ ngày bắt đầu (có thể chỉnh sửa lại theo nhu cầu)
-            String[] startDateParts = startDateText.split("-");
-            int startYear = Integer.parseInt(startDateParts[0]);
-            int startMonth = Integer.parseInt(startDateParts[1]);
-
-            // Lưu ngân sách vào cơ sở dữ liệu (có thể chỉnh sửa lại theo phương thức DAO của bạn)
+            // Lưu ngân sách vào DB
             BudgetDAO budgetDAO = new BudgetDAO(this);
-            budgetDAO.addBudget(1, selectedCategory.getId(), budgetAmount, startMonth, startYear);  // Giả sử userId là 1
+            // Giả sử userId là 1
+            budgetDAO.addBudget(1, selectedCategory.getId(), budgetAmount, selectedMonth, selectedYear);
 
-            // Có thể hiển thị thông báo thành công hoặc điều hướng đến màn hình khác
             Toast.makeText(this, "Budget saved successfully!", Toast.LENGTH_SHORT).show();
+            // Có thể finish() hoặc chuyển màn khác nếu cần
+            // finish();
         });
-
     }
 
-    private void showDatePickerDialog(final EditText dateField) {
-        // Get the current date for default date in the DatePickerDialog
+    private void showYearPickerDialog() {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        // Create a DatePickerDialog
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // Set the date on the selected EditText
-                        calendar.set(year, monthOfYear, dayOfMonth);
-                        dateField.setText(dateFormat.format(calendar.getTime())); // Format date as yyyy-MM-dd
-                    }
-                }, year, month, dayOfMonth);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (DatePicker view, int y, int m, int d) -> {
+                    etYear.setText(String.valueOf(y));
+                    calendar.set(Calendar.YEAR, y);
+                },
+                year,
+                month,
+                day
+        );
 
         datePickerDialog.show();
     }
 
+    private void showMonthPickerDialog() {
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (DatePicker view, int y, int m, int d) -> {
+                    int selectedMonth = m + 1; // 0–11 -> +1
+                    etMonth.setText(String.format(Locale.getDefault(), "%02d", selectedMonth));
+                    calendar.set(Calendar.MONTH, m);
+                },
+                year,
+                month,
+                day
+        );
+
+        datePickerDialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Xử lý nút back trên toolbar
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

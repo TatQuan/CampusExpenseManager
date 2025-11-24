@@ -61,10 +61,10 @@
 
         <!-- Ô: Thời gian áp dụng -->
         <EditText
-            android:id="@+id/et_start_date"
+            android:id="@+id/et_month"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:hint="Start date"
+            android:hint="Month"
             android:background="@drawable/bg_white_rounded"
             android:padding="12dp"
             android:focusable="false"
@@ -73,10 +73,10 @@
             android:layout_marginBottom="20dp" />
 
         <EditText
-            android:id="@+id/et_end_date"
+            android:id="@+id/et_year"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:hint="End date"
+            android:hint="Year"
             android:background="@drawable/bg_white_rounded"
             android:padding="12dp"
             android:focusable="false"

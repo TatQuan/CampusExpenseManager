@@ -3,6 +3,10 @@ package com.example.campusexpensemanager.view;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -10,10 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.campusexpensemanager.Data.dao.BudgetDAO;
 import com.example.campusexpensemanager.Data.dao.ExpenseDAO;
 import com.example.campusexpensemanager.R;
-import com.example.campusexpensemanager.adapters.ExpenseCategory;
-import com.example.campusexpensemanager.models.Category;
+import com.example.campusexpensemanager.adapters.ExpenseCategoryAdapter;
 import com.example.campusexpensemanager.models.Expense;
 import com.example.campusexpensemanager.session.Session;
 
@@ -26,13 +30,18 @@ public class ViewCategoryActivity extends AppCompatActivity {
     public static final String EXTRA_CATEGORY_NAME = "EXTRA_CATEGORY_NAME";
     public static final String EXTRA_CATEGORY_DESC = "EXTRA_CATEGORY_DESC";
 
+    TextView tvBudgetAmount;
+    TextView tvTotalSpent;
     private String categoryName;
     private int categoryId;
     private int useId;
     private RecyclerView rvExpense;
-    private ExpenseCategory expenseCategoryAdapter;
+    private ExpenseCategoryAdapter expenseCategoryAdapter;
     private ExpenseDAO expenseDAO;
     private Session session;
+    private Spinner monthFilter;
+    private Spinner yearFilter;;
+    private BudgetDAO budgetDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +76,7 @@ public class ViewCategoryActivity extends AppCompatActivity {
         expenseList = expenseDAO.getAllExpensesByCategory(categoryId, useId);
 
         // Set adapter
-        expenseCategoryAdapter = new ExpenseCategory(this, expenseList,
+        expenseCategoryAdapter = new ExpenseCategoryAdapter(this, expenseList,
                 expense -> {
                     //TODO: Handle click on expense
                 }
@@ -76,7 +85,80 @@ public class ViewCategoryActivity extends AppCompatActivity {
         rvExpense.setLayoutManager(new LinearLayoutManager(this));
         rvExpense.setAdapter(expenseCategoryAdapter);
 
+        // View budget
+        tvBudgetAmount = findViewById(R.id.tv_budget_amount);
+        tvTotalSpent = findViewById(R.id.tv_total_amount);
+
+        double totalSpent = expenseDAO.sumAllExpenses(useId, categoryId);
+        tvTotalSpent.setText(String.valueOf(totalSpent) + " VND");
+
+        // Filter time
+        monthFilter = findViewById(R.id.sp_month_filter);
+        yearFilter = findViewById(R.id.sp_year_filter);
+
+        List<Integer> months = new ArrayList<>();
+        List<Integer> years = new ArrayList<>();
+
+        for (int i = 1; i <= 12; i++) {
+            months.add(i);
+        }
+
+        budgetDAO = new BudgetDAO(this);
+        int currentYear = budgetDAO.getHighestYearInBudget(useId);
+            // nếu currentYear = 0 (chưa có budget nào) thì fallback về năm hiện tại
+        if (currentYear == 0) {
+            currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+        }
+
+            // Ví dụ: 5 năm trước tới 5 năm sau
+        for (int i = currentYear - 5; i <= currentYear + 5; i++) {
+            years.add(i);
+        }
+
+        ArrayAdapter<Integer> monthAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, months);
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monthFilter.setAdapter(monthAdapter);
+
+        ArrayAdapter<Integer> yearAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, years);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearFilter.setAdapter(yearAdapter);
+
+
+        // Hande click filter
+        monthFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int selectedMonth = months.get(position);
+                int selectedYear = years.get(yearFilter.getSelectedItemPosition());
+                updateExpenseList(selectedMonth, selectedYear);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        yearFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int selectedMonth = months.get(monthFilter.getSelectedItemPosition());
+                int selectedYear = years.get(position);
+                updateExpenseList(selectedMonth, selectedYear);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
     }
+
+    private void updateExpenseList(int selectedMonth, int selectedYear) {
+        List<Expense> expenseList =
+                expenseDAO.getExpensesByCategoryAndMonthYearRange(categoryId, useId, selectedMonth, selectedYear, categoryName);
+
+        expenseCategoryAdapter.updateExpenseList(expenseList);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

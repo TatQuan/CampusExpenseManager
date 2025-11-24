@@ -4,22 +4,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.campusexpensemanager.R;
-import com.example.campusexpensemanager.models.Budget;
-import com.example.campusexpensemanager.models.Category;
 import com.example.campusexpensemanager.models.Expense;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpenseCategory extends RecyclerView.Adapter<ExpenseCategory.ExpenseViewHolder> {
+public class ExpenseCategoryAdapter extends RecyclerView.Adapter<ExpenseCategoryAdapter.ExpenseViewHolder> {
 
     private final List<Expense> expenseList;
     private final LayoutInflater inflater;
@@ -29,7 +26,7 @@ public class ExpenseCategory extends RecyclerView.Adapter<ExpenseCategory.Expens
         void onItemClick(Expense expense);
     }
 
-    public ExpenseCategory(Context context, List<Expense> expenseList, OnItemClickListener listener) {
+    public ExpenseCategoryAdapter(Context context, List<Expense> expenseList, OnItemClickListener listener) {
         this.inflater = LayoutInflater.from(context);
         // tránh null pointer
         if (expenseList != null) {
@@ -117,6 +114,12 @@ public class ExpenseCategory extends RecyclerView.Adapter<ExpenseCategory.Expens
             tvRecurring = itemView.findViewById(R.id.tvRecurring);
             tvDescription = itemView.findViewById(R.id.tvDescription);
         }
+    }
+
+    public void updateExpenseList(List<Expense> expenseList) {
+        this.expenseList.clear();
+        this.expenseList.addAll(expenseList);
+        notifyDataSetChanged();
     }
 
 
