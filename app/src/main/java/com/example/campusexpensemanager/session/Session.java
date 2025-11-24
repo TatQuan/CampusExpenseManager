@@ -12,7 +12,6 @@ public class Session {
     private static final String KEY_ROLE = "ROLE";
     private static final String KEY_CREATED_AT = "CREATED_AT";
 
-
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
@@ -21,18 +20,16 @@ public class Session {
         editor = prefs.edit();
     }
 
-    // Lưu session
+    // Lưu session - DÙNG CHÍNH CÁC KEY Ở TRÊN
     public void saveSession(int id, String username, String email, String role, String createdAt){
-        editor.putInt("SESSION_ID", id);
-        editor.putString("SESSION_USERNAME", username);
-        editor.putString("SESSION_EMAIL", email);
-        editor.putString("SESSION_ROLE", role);
-        editor.putString("SESSION_CREATED_AT", createdAt);
-
+        editor.putInt(KEY_USER_ID, id);
+        editor.putString(KEY_USERNAME, username);
+        editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_ROLE, role);
+        editor.putString(KEY_CREATED_AT, createdAt);
         editor.apply();
     }
 
-    // Lấy userId
     public int getUserId() {
         return prefs.getInt(KEY_USER_ID, -1);
     }
@@ -53,14 +50,13 @@ public class Session {
         return prefs.getString(KEY_CREATED_AT, "");
     }
 
-    // Kiểm tra đăng nhập
     public boolean isLoggedIn() {
         return prefs.contains(KEY_USER_ID);
     }
 
-    // Xoá session (logout)
     public void logout() {
         editor.clear();
         editor.apply();
     }
 }
+

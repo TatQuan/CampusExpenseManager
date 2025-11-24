@@ -40,14 +40,17 @@ public class ViewCategoryActivity extends AppCompatActivity {
     private ExpenseDAO expenseDAO;
     private Session session;
     private Spinner monthFilter;
-    private Spinner yearFilter;;
+    private Spinner yearFilter;
     private BudgetDAO budgetDAO;
+
+    // Cờ để bỏ qua lần onItemSelected đầu tiên
+    private boolean isMonthFirstSelect = true;
+    private boolean isYearFirstSelect = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_category);
-
 
         // Get data from Intent
         Bundle extras = getIntent().getExtras();
@@ -59,35 +62,40 @@ public class ViewCategoryActivity extends AppCompatActivity {
             categoryId = Id;
         }
 
-        //Set title
+        // Set title
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(categoryName);
         }
 
-        //View expense
+        // View expense
         rvExpense = findViewById(R.id.rv_expense_categories);
 
         session = new Session(this);
-        useId = session.getUserId();
+        useId = session.getUserId();  // chú ý: Session phải fix KEY_USER_ID như mình nói lúc nãy
 
         expenseDAO = new ExpenseDAO(this);
-        List<Expense> expenseList = new ArrayList<>();
-        expenseList = expenseDAO.getAllExpensesByCategory(categoryId, useId);
 
-        // Set adapter
-        expenseCategoryAdapter = new ExpenseCategoryAdapter(this, expenseList,
+        // Lấy TẤT CẢ expense theo category ngay lần đầu: không filter theo tháng/năm
+        List<Expense> expenseList = expenseDAO.getAllExpensesByCategory(categoryId, useId);
+
+        // Set adapter với list full
+        expenseCategoryAdapter = new ExpenseCategoryAdapter(
+                this,
+                expenseList,
                 expense -> {
-                    //TODO: Handle click on expense
+                    // TODO: Handle click on expense nếu muốn
                 }
         );
-
         rvExpense.setLayoutManager(new LinearLayoutManager(this));
         rvExpense.setAdapter(expenseCategoryAdapter);
 
         // View budget
         tvBudgetAmount = findViewById(R.id.tv_budget_amount);
         tvTotalSpent = findViewById(R.id.tv_total_amount);
+
+        double budgetAmount = budgetDAO.getSumAmountBudgetByCategory(categoryId, useId);
+        tvBudgetAmount.setText(String.valueOf(budgetAmount) + " VND");
 
         double totalSpent = expenseDAO.sumAllExpenses(useId, categoryId);
         tvTotalSpent.setText(String.valueOf(totalSpent) + " VND");
@@ -96,8 +104,8 @@ public class ViewCategoryActivity extends AppCompatActivity {
         monthFilter = findViewById(R.id.sp_month_filter);
         yearFilter = findViewById(R.id.sp_year_filter);
 
-        List<Integer> months = new ArrayList<>();
-        List<Integer> years = new ArrayList<>();
+        final List<Integer> months = new ArrayList<>();
+        final List<Integer> years = new ArrayList<>();
 
         for (int i = 1; i <= 12; i++) {
             months.add(i);
@@ -105,60 +113,89 @@ public class ViewCategoryActivity extends AppCompatActivity {
 
         budgetDAO = new BudgetDAO(this);
         int currentYear = budgetDAO.getHighestYearInBudget(useId);
-            // nếu currentYear = 0 (chưa có budget nào) thì fallback về năm hiện tại
+        // nếu currentYear = 0 (chưa có budget nào) thì fallback về năm hiện tại
         if (currentYear == 0) {
             currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
         }
 
-            // Ví dụ: 5 năm trước tới 5 năm sau
+        // Ví dụ: 5 năm trước tới 5 năm sau
         for (int i = currentYear - 5; i <= currentYear + 5; i++) {
             years.add(i);
         }
 
-        ArrayAdapter<Integer> monthAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, months);
+        ArrayAdapter<Integer> monthAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                months
+        );
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthFilter.setAdapter(monthAdapter);
 
-        ArrayAdapter<Integer> yearAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, years);
+        ArrayAdapter<Integer> yearAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                years
+        );
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearFilter.setAdapter(yearAdapter);
 
+        // CÁCH 2: lúc đầu không filter, chỉ filter sau khi user chọn spinner
 
-        // Hande click filter
         monthFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Bỏ qua lần gọi đầu tiên (do hệ thống tự trigger khi setAdapter)
+                if (isMonthFirstSelect) {
+                    isMonthFirstSelect = false;
+                    return;
+                }
+
                 int selectedMonth = months.get(position);
                 int selectedYear = years.get(yearFilter.getSelectedItemPosition());
                 updateExpenseList(selectedMonth, selectedYear);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
+
         yearFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Bỏ qua lần gọi đầu tiên
+                if (isYearFirstSelect) {
+                    isYearFirstSelect = false;
+                    return;
+                }
+
                 int selectedMonth = months.get(monthFilter.getSelectedItemPosition());
                 int selectedYear = years.get(position);
                 updateExpenseList(selectedMonth, selectedYear);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
+        // LÚC NÀY: màn hình sẽ hiển thị toàn bộ expense theo category,
+        // filter chỉ bắt đầu chạy sau khi user chọn lại month/year.
     }
 
     private void updateExpenseList(int selectedMonth, int selectedYear) {
-        List<Expense> expenseList =
-                expenseDAO.getExpensesByCategoryAndMonthYearRange(categoryId, useId, selectedMonth, selectedYear, categoryName);
+        List<Expense> filteredList =
+                expenseDAO.getExpensesByCategoryAndMonthYearRange(
+                        categoryId,
+                        useId,
+                        selectedMonth,
+                        selectedYear
+                );
 
-        expenseCategoryAdapter.updateExpenseList(expenseList);
+        expenseCategoryAdapter.updateExpenseList(filteredList);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -173,6 +210,9 @@ public class ViewCategoryActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.editBudget) {
             Toast.makeText(this, "Edit budget clicked", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == android.R.id.home) {
+            onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);

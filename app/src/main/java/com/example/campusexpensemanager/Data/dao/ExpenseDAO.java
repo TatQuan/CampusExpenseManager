@@ -81,68 +81,72 @@ public class ExpenseDAO {
         return expenseList;
     }
 
-    // GET EXPENSE - lấy chi tiêu theo category + khoảng tháng và năm
-    public List<Expense> getExpensesByCategoryAndMonthYearRange(int categoryId, int userId, int month, int year, String name) {
-        List<Expense> expenses = new ArrayList<>();
+    // GET EXPENSE - lấy chi tiêu theo category + tháng + năm
+    public List<Expense> getExpensesByCategoryAndMonthYearRange(int categoryId, int userId, int month, int year) {
+        List<Expense> expenseList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        // strftime('%m') -> 01..12
-        String monthStr = String.format(Locale.getDefault(), "%02d", month);
-        String yearStr = String.valueOf(year);
+        // Đảm bảo month luôn 2 chữ số (01..12)
+        String monthStr = (month < 10 ? "0" : "") + month;
 
         String sql =
-                "SELECT * FROM " + DatabaseContract.ExpenseTable.TABLE_NAME + " " +
-                        "WHERE " + DatabaseContract.ExpenseTable.COLUMN_USER_ID + " = ? " +
-                        "AND " + DatabaseContract.ExpenseTable.COLUMN_CATEGORY_ID + " = ? " +
-                        "AND strftime('%m', " + DatabaseContract.ExpenseTable.COLUMN_DATE + ") = ? " +
-                        "AND strftime('%Y', " + DatabaseContract.ExpenseTable.COLUMN_DATE + ") = ? ";
+                "SELECT " +
+                        "e." + DatabaseContract.ExpenseTable.COLUMN_ID + " AS expenseId, " +
+                        "e." + DatabaseContract.ExpenseTable.COLUMN_DESCRIPTION + " AS description, " +
+                        "e." + DatabaseContract.ExpenseTable.COLUMN_AMOUNT + " AS amount, " +
+                        "e." + DatabaseContract.ExpenseTable.COLUMN_DATE + " AS date, " +
+                        "e." + DatabaseContract.ExpenseTable.COLUMN_START_DATE + " AS startDate, " +
+                        "e." + DatabaseContract.ExpenseTable.COLUMN_END_DATE + " AS endDate, " +
+                        "e." + DatabaseContract.ExpenseTable.COLUMN_CATEGORY_ID + " AS categoryId, " +
+                        "c." + DatabaseContract.CategoryTable.COLUMN_NAME + " AS categoryName, " +
+                        "e." + DatabaseContract.ExpenseTable.COLUMN_IS_RECURRING + " AS isRecurring " +
+                        "FROM " + DatabaseContract.ExpenseTable.TABLE_NAME + " e " +
+                        "JOIN " + DatabaseContract.CategoryTable.TABLE_NAME + " c " +
+                        "ON e." + DatabaseContract.ExpenseTable.COLUMN_CATEGORY_ID + " = c." + DatabaseContract.CategoryTable.COLUMN_ID + " " +
+                        "WHERE e." + DatabaseContract.ExpenseTable.COLUMN_USER_ID + " = ? " +
+                        "AND e." + DatabaseContract.ExpenseTable.COLUMN_CATEGORY_ID + " = ? " +
+                        "AND strftime('%Y', e." + DatabaseContract.ExpenseTable.COLUMN_DATE + ") = ? " +
+                        "AND strftime('%m', e." + DatabaseContract.ExpenseTable.COLUMN_DATE + ") = ? " +
+                        "ORDER BY e." + DatabaseContract.ExpenseTable.COLUMN_DATE + " DESC;";
 
-        Cursor cursor = db.rawQuery(sql,
-                new String[]{
-                        String.valueOf(userId),
-                        String.valueOf(categoryId),
-                        monthStr,
-                        yearStr
-                });
+        Cursor cursor = db.rawQuery(sql, new String[] {
+                String.valueOf(userId),
+                String.valueOf(categoryId),
+                String.valueOf(year),
+                monthStr
+        });
 
-        if (cursor != null) {
-            try {
-                if (cursor.moveToFirst()) {
-                    do {
-                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_ID));
-                        String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_DESCRIPTION));
-                        double amount = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_AMOUNT));
-                        String date = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_DATE));
-                        String startDate = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_START_DATE));
-                        String endDate = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_END_DATE));
-                        int categoryID = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_CATEGORY_ID));
-                        int userID = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_USER_ID));
-                        int isRecurring = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExpenseTable.COLUMN_IS_RECURRING));
+        if (cursor.moveToFirst()) {
+            do {
+                int expenseId = cursor.getInt(cursor.getColumnIndexOrThrow("expenseId"));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+                double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                String startDate = cursor.getString(cursor.getColumnIndexOrThrow("startDate"));
+                String endDate = cursor.getString(cursor.getColumnIndexOrThrow("endDate"));
+                int catId = cursor.getInt(cursor.getColumnIndexOrThrow("categoryId"));
+                String categoryName = cursor.getString(cursor.getColumnIndexOrThrow("categoryName"));
+                int isRecurring = cursor.getInt(cursor.getColumnIndexOrThrow("isRecurring"));
 
-                        // Vì bảng không có categoryName nên để rỗng ""
-                        Expense e = new Expense(
-                                id,
-                                description,
-                                amount,
-                                date,
-                                startDate,
-                                endDate,
-                                categoryID,
-                                name,         // categoryName
-                                isRecurring
-                        );
-
-                        expenses.add(e);
-
-                    } while (cursor.moveToNext());
-                }
-            } finally {
-                cursor.close();
-            }
+                Expense e = new Expense(
+                        expenseId,
+                        description,
+                        amount,
+                        date,
+                        startDate,
+                        endDate,
+                        catId,
+                        categoryName,
+                        isRecurring
+                );
+                expenseList.add(e);
+            } while (cursor.moveToNext());
         }
 
-        return expenses;
+        cursor.close();
+        return expenseList;
     }
+
 
 
     // SUM ALL EXPENSE - lấy tổng chi tiêu theo category

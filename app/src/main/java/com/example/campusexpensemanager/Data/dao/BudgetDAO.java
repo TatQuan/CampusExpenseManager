@@ -164,4 +164,20 @@ public class BudgetDAO {
         }
     }
 
+    //GET SUM AMOUNT BUDGET BY CATEGORY
+    public double getSumAmountBudgetByCategory(int categoryId, int userId){
+        SQLiteDatabase db = dbhelper.getReadableDatabase();
+        String sql =
+                "SELECT SUM(" + DatabaseContract.BudgetTable.COLUMN_BUDGET_AMOUNT + ") FROM " + DatabaseContract.BudgetTable.TABLE_NAME + " " +
+                        "WHERE " + DatabaseContract.BudgetTable.COLUMN_CATEGORY_ID + " = ? " +
+                        "AND " + DatabaseContract.BudgetTable.COLUMN_USER_ID + " = ? ";
+
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(categoryId), String.valueOf(userId)});
+        if (cursor.moveToFirst()) {
+            return cursor.getDouble(0);
+        } else {
+            return -1;
+        }
+    }
+
 }
