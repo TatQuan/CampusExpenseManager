@@ -1,15 +1,16 @@
 package com.example.campusexpensemanager.view;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,17 +18,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.campusexpensemanager.view.BaseActivity;
+import com.example.campusexpensemanager.session.Session;
 import com.example.campusexpensemanager.Data.dao.CategoryDAO;
 import com.example.campusexpensemanager.Data.dao.ExpenseDAO;
 import com.example.campusexpensemanager.R;
-import com.example.campusexpensemanager.adapters.CategoryAdapter;
+import com.example.campusexpensemanager.adapters.SelectCategoryAdapter;
 import com.example.campusexpensemanager.models.Category;
-import com.example.campusexpensemanager.models.Expense;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
-public class AddExpenseActivity extends BaseActivity {
+public class AddExpenseActivity extends AppCompatActivity {
 
     private EditText etDate;
     private EditText etDescription;
@@ -36,28 +39,35 @@ public class AddExpenseActivity extends BaseActivity {
     private EditText etEndDate;
     private Button btnEnter;
     private CheckBox checkBoxRecurring;
+
     private CategoryDAO categoryDAO;
     private RecyclerView rvCategories;
-    private CategoryAdapter categoryAdapter;
+    private SelectCategoryAdapter selectCategoryAdapter;
     private List<Category> categories;
-
     private Category selectedCategory;
+    private Session session;
+
+    Calendar calendar = Calendar.getInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setActivityLayout(R.layout.activity_add_expense);
+        setContentView(R.layout.activity_add_expense);
 
-        int userId = getUserId();
         // Setup toolbar
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Add Expense");
         }
 
         etExpenditureAmount = findViewById(R.id.et_expenditure_amount);
         etDate = findViewById(R.id.et_date);
+        etDate.setText(dateFormat.format(calendar.getTime()));
         etDescription = findViewById(R.id.et_description);
         etStartDate = findViewById(R.id.et_start_date);
+        etStartDate.setText(dateFormat.format(calendar.getTime()));
         etEndDate = findViewById(R.id.et_end_date);
         checkBoxRecurring = findViewById(R.id.checkboxRecurring);
         rvCategories = findViewById(R.id.rvCategories);
@@ -68,11 +78,17 @@ public class AddExpenseActivity extends BaseActivity {
         // Load categories
         categoryDAO = new CategoryDAO(this);
         categories = categoryDAO.getAllCategories();
-        categoryAdapter = new CategoryAdapter(this, categories);
-        rvCategories.setAdapter(categoryAdapter);
+        selectCategoryAdapter = new SelectCategoryAdapter(this, categories);
+        rvCategories.setAdapter(selectCategoryAdapter);
+
+        // Set date pickers for start and end date EditText
+        etStartDate.setOnClickListener(v -> showDatePickerDialog(etStartDate));
+        etEndDate.setOnClickListener(v -> showDatePickerDialog(etEndDate));
+        etDate.setOnClickListener(v -> showDatePickerDialog(etDate));
+
 
         // Adapter for category selection
-        categoryAdapter.setOnCategoryClickListener(category -> {
+        selectCategoryAdapter.setOnCategoryClickListener(category -> {
             selectedCategory = category; // Save the selected category
         });
 
@@ -81,11 +97,20 @@ public class AddExpenseActivity extends BaseActivity {
             if (isChecked) {
                 etStartDate.setVisibility(View.VISIBLE);
                 etEndDate.setVisibility(View.VISIBLE);
+
+                // Gợi ý ngày bắt đầu = hôm nay
+                etStartDate.setText(dateFormat.format(calendar.getTime()));
+
+                // Ví dụ gợi ý end date = sau 1 tháng
+                Calendar endCal = (Calendar) calendar.clone();
+                endCal.add(Calendar.MONTH, 1);
+                etEndDate.setText(dateFormat.format(endCal.getTime()));
             } else {
                 etStartDate.setVisibility(View.GONE);
                 etEndDate.setVisibility(View.GONE);
             }
         });
+
 
         if (btnEnter == null) {
             Log.e("AddExpenseActivity", "Button not found with id: R.id.btn_add_expense");
@@ -133,12 +158,34 @@ public class AddExpenseActivity extends BaseActivity {
                 endDate = null;
             }
 
+            session = new Session(this);
+            int userId = session.getUserId();
             // Insert expense into database
             expenseDAO.addExpense(description, amount, date, startDate, endDate, selectedCategory.getId(), userId, isRecurring ? 1 : 0);
 
             Toast.makeText(this, "Add expense successfully!", Toast.LENGTH_SHORT).show();
             finish();
         });
+    }
+
+    private void showDatePickerDialog(final EditText dateField) {
+        // Get the current date for default date in the DatePickerDialog
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Create a DatePickerDialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // Set the date on the selected EditText
+                        calendar.set(year, monthOfYear, dayOfMonth);
+                        dateField.setText(dateFormat.format(calendar.getTime())); // Format date as yyyy-MM-dd
+                    }
+                }, year, month, dayOfMonth);
+
+        datePickerDialog.show();
     }
 
     @Override
@@ -158,14 +205,5 @@ public class AddExpenseActivity extends BaseActivity {
             }
         }
         return super.dispatchTouchEvent(ev);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

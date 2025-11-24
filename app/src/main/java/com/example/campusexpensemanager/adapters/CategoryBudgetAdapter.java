@@ -42,7 +42,7 @@ public class CategoryBudgetAdapter extends RecyclerView.Adapter<CategoryBudgetAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.recycler_view_category_vertical, parent, false);
+                .inflate(R.layout.item_category_budget_view, parent, false);
         return new ViewHolder(view);
     }
 
@@ -95,4 +95,6 @@ public class CategoryBudgetAdapter extends RecyclerView.Adapter<CategoryBudgetAd
             icCategory = itemView.findViewById(R.id.icCategory);
         }
     }
+
+
 }

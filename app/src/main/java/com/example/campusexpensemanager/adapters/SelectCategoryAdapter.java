@@ -15,14 +15,14 @@ import com.example.campusexpensemanager.models.Category;
 
 import java.util.List;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
+public class SelectCategoryAdapter extends RecyclerView.Adapter<SelectCategoryAdapter.CategoryViewHolder> {
 
     private Context context;
     private List<Category> categoryList;
     private int selectedPosition = RecyclerView.NO_POSITION; // lưu vị trí được chọn
 
     // Constructor
-    public CategoryAdapter(Context context, List<Category> categoryList) {
+    public SelectCategoryAdapter(Context context, List<Category> categoryList) {
         this.context = context;
         this.categoryList = categoryList;
     }
@@ -31,7 +31,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Nạp layout recycler_view_item.xml
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_category_custom, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_category_choose, parent, false);
         return new CategoryViewHolder(view);
     }
 

@@ -10,18 +10,19 @@ import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.campusexpensemanager.Data.dao.BudgetDAO;
 import com.example.campusexpensemanager.Data.dao.CategoryDAO;
 import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.models.Category;
-import com.example.campusexpensemanager.view.BaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class SetBudgetActivity extends BaseActivity {
+public class SetBudgetActivity extends AppCompatActivity {
 
     Spinner spCategory;
     EditText etBudgetAmount;
@@ -38,7 +39,14 @@ public class SetBudgetActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setActivityLayout(R.layout.activity_set_budget);
+        setContentView(R.layout.activity_set_budget);
+
+        //Setup toolbar
+        // Set action bar title
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Set Budget");
+        }
 
         spCategory = findViewById(R.id.sp_category);
         etBudgetAmount = findViewById(R.id.et_budget_amount);
@@ -48,11 +56,6 @@ public class SetBudgetActivity extends BaseActivity {
         // Get data category
         categoryDAO = new CategoryDAO(this);
         categories = categoryDAO.getAllCategories();
-
-        // Set action bar title
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Set Budget");
-        }
 
         // Drop-down list for category selection
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
@@ -66,7 +69,12 @@ public class SetBudgetActivity extends BaseActivity {
 
         // Set date pickers for start and end date EditTexts
         etStartDate.setOnClickListener(v -> showDatePickerDialog(etStartDate));
+        etStartDate.setText(dateFormat.format(calendar.getTime()));
         etEndDate.setOnClickListener(v -> showDatePickerDialog(etEndDate));
+        Calendar endCal = (Calendar) calendar.clone();
+        endCal.add(Calendar.MONTH, 1);
+        etEndDate.setText(dateFormat.format(endCal.getTime()));
+
 
         // Save button logic (TODO)
         Button btnSaveBudget = findViewById(R.id.btn_save_budget);
@@ -123,13 +131,4 @@ public class SetBudgetActivity extends BaseActivity {
         datePickerDialog.show();
     }
 
-    //Back to home by click on back button on toolbar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

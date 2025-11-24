@@ -13,21 +13,18 @@ import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.session.Session;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends AddExpenseActivity {
     private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setActivityLayout(R.layout.activity_home);
+        setContentView(R.layout.activity_home);
 
+        //Get session
         Session session = new Session(this);
-
-        String username = session.getUsername();
-        String email = session.getEmail();
-        int userId = session.getUserId();
-
+        String role = session.getRole();
 
         //Hide action bar
         if (getSupportActionBar() != null) {

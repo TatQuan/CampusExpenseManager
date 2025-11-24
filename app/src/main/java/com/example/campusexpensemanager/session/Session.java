@@ -9,6 +9,9 @@ public class Session {
     private static final String KEY_USERNAME = "USERNAME";
     private static final String KEY_EMAIL = "EMAIL";
     private static final String KEY_USER_ID = "USER_ID";
+    private static final String KEY_ROLE = "ROLE";
+    private static final String KEY_CREATED_AT = "CREATED_AT";
+
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -19,10 +22,13 @@ public class Session {
     }
 
     // Lưu session
-    public void saveUserSession(int userId, String username, String email) {
-        editor.putInt(KEY_USER_ID, userId);
-        editor.putString(KEY_USERNAME, username);
-        editor.putString(KEY_EMAIL, email);
+    public void saveSession(int id, String username, String email, String role, String createdAt){
+        editor.putInt("SESSION_ID", id);
+        editor.putString("SESSION_USERNAME", username);
+        editor.putString("SESSION_EMAIL", email);
+        editor.putString("SESSION_ROLE", role);
+        editor.putString("SESSION_CREATED_AT", createdAt);
+
         editor.apply();
     }
 
@@ -37,6 +43,14 @@ public class Session {
 
     public String getEmail() {
         return prefs.getString(KEY_EMAIL, "");
+    }
+
+    public String getRole() {
+        return prefs.getString(KEY_ROLE, "");
+    }
+
+    public String getCreatedAt() {
+        return prefs.getString(KEY_CREATED_AT, "");
     }
 
     // Kiểm tra đăng nhập

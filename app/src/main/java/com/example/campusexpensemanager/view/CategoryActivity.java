@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,11 +15,12 @@ import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.adapters.CategoryBudgetAdapter;
 import com.example.campusexpensemanager.models.Budget;
 import com.example.campusexpensemanager.models.Category;
+import com.example.campusexpensemanager.session.Session;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CategoryActivity extends BaseActivity {
+public class CategoryActivity extends AppCompatActivity {
 
     private RecyclerView rvCategories;
     private CategoryBudgetAdapter adapter;
@@ -28,15 +30,16 @@ public class CategoryActivity extends BaseActivity {
 
     private List<Category> categoryList;
     private List<Budget> budgetList;
-
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setActivityLayout(R.layout.activity_category);
+        setContentView(R.layout.activity_category);
 
         // Setup toolbar
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Category");
         }
 
@@ -46,11 +49,12 @@ public class CategoryActivity extends BaseActivity {
         categoryDAO = new CategoryDAO(this);
         budgetDAO = new BudgetDAO(this);
 
-        // Lấy dữ liệu
+        // Get data category
         categoryList = categoryDAO.getAllCategories();
 
-        // Lấy budget của user hiện tại
-        int userId = getUserId();
+        // Get budget of user logged in
+        session = new Session(this);
+        int userId = session.getUserId();
         budgetList = budgetDAO.getAllBudgets().stream()
                 .filter(b -> b.getUserId() == userId)
                 .collect(Collectors.toList());

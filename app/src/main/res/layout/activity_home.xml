@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#FFF5F7">
 
     <!-- Toàn bộ nội dung cuộn -->
@@ -235,84 +236,15 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <HorizontalScrollView
-                android:id="@+id/btn_recent_spending"
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:scrollbars="none" />
+                android:layout_height="200dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="true"
+                android:padding="8dp"
+                tools:orientation="vertical"
+                tools:listitem="@layout/item_expense" />
 
-            <!-- Savings Goals -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                android:text="Savings Goals"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:background="@android:color/white"
-                android:padding="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
-
-                    <!-- Bên trái -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="7"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="20dp"
-                            android:layout_marginBottom="12dp"
-                            android:text="Set a savings goal today!"
-                            android:textColor="#000000"
-                            android:textSize="20sp" />
-
-                        <Button
-                            android:id="@+id/btn_create_goals"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:backgroundTint="#E91E63"
-                            android:paddingLeft="16dp"
-                            android:paddingRight="16dp"
-                            android:text="Create goals"
-                            android:textColor="@android:color/white" />
-                    </LinearLayout>
-
-                    <!-- Bên phải -->
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_target_circle" />
-                    </FrameLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 

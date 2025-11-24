@@ -31,7 +31,7 @@ public class UserDAO {
         String sql = "INSERT INTO " + DatabaseContract.UserTable.TABLE_NAME +
                 " (" + DatabaseContract.UserTable.COLUMN_USERNAME + ", " +
                 DatabaseContract.UserTable.COLUMN_EMAIL + ", " +
-                DatabaseContract.UserTable.COLUMN_PASSWORD +") VALUES('" +
+                DatabaseContract.UserTable.COLUMN_PASSWORD + ") VALUES('" +
                 username + "', '" + email + "', '" + password + "');";
         db.execSQL(sql);
     }

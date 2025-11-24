@@ -17,7 +17,7 @@
         android:clipToPadding="false"
         android:nestedScrollingEnabled="true"
         android:padding="8dp"
-        tools:listitem="@layout/recycler_view_category_vertical" />
+        tools:listitem="@layout/item_category_budget_view" />
 
 
 </LinearLayout>

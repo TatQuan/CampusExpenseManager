@@ -13,36 +13,36 @@
         android:theme="@style/Theme.CampusExpenseManager">
         <activity
             android:name=".view.SetBudgetActivity"
+            android:parentActivityName=".view.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".view.ViewCategoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.BaseActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.BudgetActivity"
+            android:parentActivityName=".view.CategoryActivity"
             android:exported="false" />
         <activity
             android:name=".view.AddExpenseActivity"
+            android:parentActivityName=".view.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".view.MonthlyReportActivity"
             android:exported="false" />
         <activity
             android:name=".view.ProfileActivity"
+            android:parentActivityName=".view.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".view.NotificationActivity"
             android:exported="false" />
         <activity
             android:name=".view.CategoryActivity"
+            android:parentActivityName=".view.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".view.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".view.RegisterActivity"
+            android:parentActivityName=".view.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".view.LoginActivity"

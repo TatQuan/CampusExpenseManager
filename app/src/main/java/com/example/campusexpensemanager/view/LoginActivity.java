@@ -84,10 +84,12 @@ public class LoginActivity extends AppCompatActivity {
                 user = userDAO.login(username, password);
                 if (user != null) {
                     Session session = new Session(LoginActivity.this);
-                    session.saveUserSession(
+                    session.saveSession(
                             user.getUserId(),
                             username,
-                            user.getEmail()
+                            user.getEmail(),
+                            user.getRole(),
+                            user.getCreatedAt()
                     );
 
                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
