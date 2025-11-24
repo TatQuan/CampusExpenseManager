@@ -57,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 DatabaseContract.UserTable.COLUMN_PASSWORD + ", " +
                 DatabaseContract.UserTable.COLUMN_EMAIL + ", " +
                 DatabaseContract.UserTable.COLUMN_ROLE + ") " +
-                "VALUES ('admin', 'admin1', 'admin@gmail.com', 'admin');");
+                "VALUES ('admin', 'admin1', 'admin@gmail.com', 'ADMIN');");
     }
 
     public void insertDataExpense(SQLiteDatabase db) {

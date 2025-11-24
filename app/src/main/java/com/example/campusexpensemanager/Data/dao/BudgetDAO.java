@@ -58,7 +58,21 @@ public class BudgetDAO {
         return budgetList;
     }
 
-    // Check over budget
+    // SUM ALL BUDGETS
+    public double getTotalBudget(int userId) {
+        SQLiteDatabase db = dbhelper.getReadableDatabase();
+        String sql =
+                "SELECT SUM(" + DatabaseContract.BudgetTable.COLUMN_BUDGET_AMOUNT + ") AS total " +
+                        "FROM " + DatabaseContract.BudgetTable.TABLE_NAME + " " +
+                        "WHERE " + DatabaseContract.BudgetTable.COLUMN_USER_ID + " = ? " +
+                        "AND " + DatabaseContract.BudgetTable.COLUMN_IS_DELETED + " = 0";
+
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)});
+        if (cursor.moveToFirst()) {
+            return cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+        }
+        return 0;
+    }
 
     //GET BUDGET - lấy danh sách chi tiêu theo tháng
     public List<Budget> getBudgetsByMonth(int userId, int month, int year) {
@@ -128,26 +142,36 @@ public class BudgetDAO {
     }
 
     //GET BUDGET BY MONTH AND YEAR
-    public Budget getBudgetByMonthAndYear(int userId, int month, int year){
+    public Budget getBudgetByMonthAndYear(int userId, int categoryId, int month, int year){
         SQLiteDatabase db = dbhelper.getReadableDatabase();
         String sql =
                 "SELECT * FROM " + DatabaseContract.BudgetTable.TABLE_NAME + " " +
                         "WHERE " + DatabaseContract.BudgetTable.COLUMN_USER_ID + " = ? " +
+                        "AND " + DatabaseContract.BudgetTable.COLUMN_CATEGORY_ID + " = ? " +
                         "AND " + DatabaseContract.BudgetTable.COLUMN_MONTH + " = ? " +
-                        "AND " + DatabaseContract.BudgetTable.COLUMN_YEAR + " = ? ";
+                        "AND " + DatabaseContract.BudgetTable.COLUMN_YEAR + " = ? "+
+                        "AND " + DatabaseContract.BudgetTable.COLUMN_IS_DELETED + " = 0";
 
-        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId), String.valueOf(month), String.valueOf(year)});
+        Cursor cursor = db.rawQuery(sql, new String[]{
+                String.valueOf(userId),
+                String.valueOf(categoryId),  // cái này bị thiếu ở code cũ
+                String.valueOf(month),
+                String.valueOf(year)
+        });
+
         if (cursor.moveToFirst()) {
             int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_ID));
-            int categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_CATEGORY_ID));
             double budgetAmount = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_BUDGET_AMOUNT));
             double remainingBudget = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseContract.BudgetTable.COLUMN_REMAINING_BUDGET));
 
+            cursor.close();
             return new Budget(id, userId, categoryId, budgetAmount, remainingBudget, month, year);
         } else {
+            cursor.close();
             return null;
         }
     }
+
 
     //GET HIGHEST YEAR IN BUDGET
     public int getHighestYearInBudget(int userId){
@@ -179,5 +203,19 @@ public class BudgetDAO {
             return -1;
         }
     }
+
+    // UPDATE chỉ budgetAmount, không đụng remainingBudget
+    public void updateBudgetAmount(int id, double budgetAmount) {
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.BudgetTable.COLUMN_BUDGET_AMOUNT, budgetAmount);
+        db.update(
+                DatabaseContract.BudgetTable.TABLE_NAME,
+                values,
+                DatabaseContract.BudgetTable.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(id)}
+        );
+    }
+
 
 }

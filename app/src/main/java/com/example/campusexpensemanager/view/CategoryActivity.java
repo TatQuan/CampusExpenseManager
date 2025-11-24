@@ -2,6 +2,8 @@ package com.example.campusexpensemanager.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,19 +57,15 @@ public class CategoryActivity extends AppCompatActivity {
         // Get budget of user logged in
         session = new Session(this);
         int userId = session.getUserId();
-        budgetList = budgetDAO.getAllBudgets().stream()
-                .filter(b -> b.getUserId() == userId)
-                .collect(Collectors.toList());
 
         // Adapter
         adapter = new CategoryBudgetAdapter(
                 this,
                 categoryList,
-                budgetList,
                 userId,
                 new CategoryBudgetAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(Category category, Budget budget) {
+                    public void onItemClick(Category category) {
                         Intent intent = new Intent(CategoryActivity.this, ViewCategoryActivity.class);
                         intent.putExtra(ViewCategoryActivity.EXTRA_CATEGORY_ID, category.getId());
                         intent.putExtra(ViewCategoryActivity.EXTRA_CATEGORY_NAME, category.getName());
@@ -78,5 +76,40 @@ public class CategoryActivity extends AppCompatActivity {
         );
 
         rvCategories.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu; thêm các item vào ActionBar
+        getMenuInflater().inflate(R.menu.menu_add, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Xử lý click menu
+        int id = item.getItemId();
+        if (id == R.id.addCategory) {
+                startActivity(new Intent(this, AddCategoryActivity.class));
+            return true;
+        } else if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem addCategoryItem = menu.findItem(R.id.addCategory);
+
+        // Ẩn nếu role == "STUDENT"
+        if (session.getRole().equals("STUDENT")) {
+            addCategoryItem.setVisible(false);
+        } else {
+            addCategoryItem.setVisible(true);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 }

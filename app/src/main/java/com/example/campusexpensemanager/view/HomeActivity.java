@@ -5,13 +5,9 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.session.Session;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AddExpenseActivity {
     private Intent intent;
@@ -25,11 +21,15 @@ public class HomeActivity extends AddExpenseActivity {
         //Get session
         Session session = new Session(this);
         String role = session.getRole();
+        if (role.equals("ADMIN")) {
+            findViewById(R.id.btn_user).setVisibility(LinearLayout.VISIBLE);
+        }
 
         //Hide action bar
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
 
         //Button event listener
         LinearLayout btnSetBudget = findViewById(R.id.btn_set_budget);
@@ -60,7 +60,12 @@ public class HomeActivity extends AddExpenseActivity {
 
         LinearLayout btnMonthlyReport = findViewById(R.id.btn_monthly_report);
         btnMonthlyReport.setOnClickListener(view -> {
-            startActivity(new Intent(HomeActivity.this, MonthlyReportActivity.class));
+            startActivity(new Intent(HomeActivity.this, ReportActivity.class));
+        });
+
+        LinearLayout btnUser = findViewById(R.id.btn_user);
+        btnUser.setOnClickListener(view -> {
+            startActivity(new Intent(HomeActivity.this, UserActivity.class));
         });
     }
 }

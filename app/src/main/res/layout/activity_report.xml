@@ -3,12 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#FFF5F7"
     android:fitsSystemWindows="true">
 
-    <!-- App Bar -->
-
-    <!-- ScrollView chứa toàn nội dung -->
+    <!-- Toàn bộ nội dung cuộn -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -20,26 +19,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_gravity="right">
-                <Spinner
-                    android:id="@+id/sp_month_filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"/>
-
-                <Spinner
-                    android:id="@+id/sp_year_filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"/>
-            </LinearLayout>
-
-
             <!-- 🔹 BUDGET BOX -->
             <LinearLayout
                 android:id="@+id/box_budget"
@@ -50,6 +29,7 @@
                 android:elevation="4dp"
                 android:padding="16dp"
                 android:layout_marginBottom="12dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -102,14 +82,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expense"
-                android:textColor="#000"
-                android:textSize="20sp"/>
-
-            <!-- 🔹 CARDVIEW chứa danh sách chi tiêu -->
+            <!-- Danh sách chi tiêu theo hạng mục -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,19 +95,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="12dp">
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp">
 
-
-                    <!-- 🔹 RecyclerView show danh sách chi tiêu -->
+                    <!-- RecyclerView chiếm phần trên màn hình -->
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_expense_categories"
+                        android:id="@+id/rvCategories"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false" />
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:clipToPadding="false"
+                        android:nestedScrollingEnabled="true"
+                        android:padding="8dp"
+                        tools:listitem="@layout/item_category_budget_view" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
         </LinearLayout>
     </ScrollView>
 

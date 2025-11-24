@@ -12,38 +12,60 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusExpenseManager">
         <activity
-            android:name=".view.SetBudgetActivity"
-            android:parentActivityName=".view.HomeActivity"
+            android:name=".view.EditBudgetActivity"
+            android:parentActivityName=".view.ViewCategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ViewCategoryActivity"
+            android:name=".view.AddUserActivity"
+            android:exported="false"
+            android:parentActivityName=".view.UserActivity" />
+        <activity
+            android:name=".view.UserActivity"
+            android:exported="false"
+            android:parentActivityName=".view.HomeActivity" />
+        <activity
+            android:name=".view.AddCategoryActivity"
             android:parentActivityName=".view.CategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".view.AddExpenseActivity"
-            android:parentActivityName=".view.HomeActivity"
-            android:exported="false" />
+            android:name=".view.EditCategoryActivity"
+            android:exported="false"
+            android:parentActivityName=".view.ViewCategoryActivity" />
         <activity
-            android:name=".view.MonthlyReportActivity"
-            android:exported="false" />
+            android:name=".view.SetBudgetActivity"
+            android:exported="false"
+            android:parentActivityName=".view.HomeActivity" />
+        <activity
+            android:name=".view.ViewCategoryActivity"
+            android:exported="false"
+            android:parentActivityName=".view.CategoryActivity" />
+        <activity
+            android:name=".view.AddExpenseActivity"
+            android:exported="false"
+            android:parentActivityName=".view.HomeActivity" />
+        <activity
+            android:name=".view.ReportActivity"
+            android:exported="false"
+            android:parentActivityName=".view.HomeActivity" />
         <activity
             android:name=".view.ProfileActivity"
-            android:parentActivityName=".view.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".view.HomeActivity" />
         <activity
             android:name=".view.NotificationActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".view.HomeActivity" />
         <activity
             android:name=".view.CategoryActivity"
-            android:parentActivityName=".view.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".view.HomeActivity" />
         <activity
             android:name=".view.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".view.RegisterActivity"
-            android:parentActivityName=".view.LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".view.LoginActivity" />
         <activity
             android:name=".view.LoginActivity"
             android:exported="true">

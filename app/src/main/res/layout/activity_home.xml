@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#FFF5F7">
+    android:background="#FFF5F7"
+    android:fitsSystemWindows="true">
 
     <!-- Toàn bộ nội dung cuộn -->
     <ScrollView
@@ -189,7 +190,7 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/ic_user" />
+                        android:src="@drawable/ic_profile" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -224,26 +225,33 @@
                         android:textColor="#E91E63"
                         android:textSize="14sp" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btn_user"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_user" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:text="User"
+                        android:textColor="#E91E63"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </GridLayout>
 
             <!-- Recent Spending -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                android:text="Recent Spending"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="true"
-                android:padding="8dp"
-                tools:orientation="vertical"
-                tools:listitem="@layout/item_expense" />
 
         </LinearLayout>
     </ScrollView>

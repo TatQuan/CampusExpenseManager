@@ -42,7 +42,7 @@ public class ProfileActivity extends AddExpenseActivity {
 
         tvUsername.setText(username);
         tvEmail.setText(email);
-        tvCreatedAt.setText(createdAt);
+        tvCreatedAt.setText("Created at: " + createdAt);
 
         btnEditProfile.setOnClickListener(view -> {
             //TODO: Edit profile

@@ -113,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
             //Insert user if all done
             try{
                 UserDAO userDAO = new UserDAO(this);
-                userDAO.insertUser(username, password, email);
+                userDAO.insertUser(username, password, email, "STUDENT");
             }
             catch (Exception e){
                 e.printStackTrace();

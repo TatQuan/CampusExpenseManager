@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.campusexpensemanager.service.BudgetNotificationHelper;
 import com.example.campusexpensemanager.session.Session;
 import com.example.campusexpensemanager.Data.dao.CategoryDAO;
 import com.example.campusexpensemanager.Data.dao.ExpenseDAO;
@@ -163,7 +164,92 @@ public class AddExpenseActivity extends AppCompatActivity {
             // Insert expense into database
             expenseDAO.addExpense(description, amount, date, startDate, endDate, selectedCategory.getId(), userId, isRecurring ? 1 : 0);
 
+            boolean nof = false;
+
+            if (isRecurring) {
+
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+                    Calendar startCal = Calendar.getInstance();
+                    startCal.setTime(sdf.parse(startDate));
+
+                    Calendar endCal = Calendar.getInstance();
+                    endCal.setTime(sdf.parse(endDate));
+
+                    int startYear = startCal.get(Calendar.YEAR);
+                    int startMonth = startCal.get(Calendar.MONTH) + 1;
+
+                    int endYear = endCal.get(Calendar.YEAR);
+                    int endMonth = endCal.get(Calendar.MONTH) + 1;
+
+                    // Loop từ start đến end
+                    Calendar loopCal = (Calendar) startCal.clone();
+
+                    while (true) {
+                        int y = loopCal.get(Calendar.YEAR);
+                        int m = loopCal.get(Calendar.MONTH) + 1;
+
+                        BudgetNotificationHelper.checkBudgetNotification(
+                                this,
+                                userId,
+                                selectedCategory.getId(),
+                                y,
+                                m
+                        );
+
+                        // Nếu đã đến tháng cuối thì break
+                        if (y == endYear && m == endMonth) {
+                            break;
+                        }
+
+                        // Tăng tháng
+                        loopCal.add(Calendar.MONTH, 1);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+
+                // Chi tiêu thường → chỉ 1 tháng từ "date"
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(sdf.parse(date));
+
+                    int selectedYear = cal.get(Calendar.YEAR);
+                    int selectedMonth = cal.get(Calendar.MONTH) + 1;
+
+                    BudgetNotificationHelper.checkBudgetNotification(
+                            this,
+                            userId,
+                            selectedCategory.getId(),
+                            selectedYear,
+                            selectedMonth
+                    );
+
+                    nof = true;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (nof) {
+
+                Toast.makeText(this, "Add expense successfully! You has a notification", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+
             Toast.makeText(this, "Add expense successfully!", Toast.LENGTH_SHORT).show();
+            finish();
+        });
+
+        Button btnCancel = findViewById(R.id.btn_cancel_expense);
+        btnCancel.setOnClickListener(v -> {
             finish();
         });
     }

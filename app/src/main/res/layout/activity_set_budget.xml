@@ -3,101 +3,130 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF5F7">
+    android:background="#FFF5F7"
+    android:fitsSystemWindows="true"
+    android:gravity="center">
 
-    <!-- Form nội dung -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="#FFF5F7">
+        android:layout_height="604dp">
 
-        <!-- Ảnh banner phía trên -->
-        <ImageView
-            android:id="@+id/img_banner"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/ic_banner"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Ô: Hạng mục -->
-        <Spinner
-            android:id="@+id/sp_category"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="Category"
-            android:background="@drawable/bg_white_rounded"
-            android:padding="12dp"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Ô: Số tiền -->
-        <EditText
-            android:id="@+id/et_budget_amount"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="Budget amount"
-            android:background="@drawable/bg_white_rounded"
-            android:padding="12dp"
-            android:inputType="numberDecimal"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Tiêu đề -->
-        <TextView
-            android:id="@+id/tv_date_range"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date Range"
-            android:textColor="#000000"
-            android:textSize="17dp"
-            android:textStyle="normal"
-            android:layout_marginBottom="8dp" />
+            android:background="#FFF5F7"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <!-- Ô: Thời gian áp dụng -->
-        <EditText
-            android:id="@+id/et_month"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="Month"
-            android:background="@drawable/bg_white_rounded"
-            android:padding="12dp"
-            android:focusable="false"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:layout_marginBottom="20dp" />
+            <!-- Ảnh banner phía trên -->
+            <ImageView
+                android:id="@+id/img_banner"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="12dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_banner" />
 
-        <EditText
-            android:id="@+id/et_year"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="Year"
-            android:background="@drawable/bg_white_rounded"
-            android:padding="12dp"
-            android:focusable="false"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:layout_marginBottom="20dp" />
+            <!-- Ô: Hạng mục -->
+            <Spinner
+                android:id="@+id/sp_category"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_white_rounded"
+                android:hint="Category"
+                android:padding="12dp"
+                android:textColor="#000"
+                android:textSize="15sp" />
 
-        <!-- Nút lưu -->
-        <Button
-            android:id="@+id/btn_save_budget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save Budget"
-            android:textColor="#FFF"
-            android:backgroundTint="#E91E63"
-            android:paddingHorizontal="28dp"
-            android:paddingVertical="12dp"
-            android:textStyle="bold"
-            android:layout_marginTop="4dp"
-            android:layout_gravity="center" />
+            <!-- Ô: Số tiền -->
+            <EditText
+                android:id="@+id/et_budget_amount"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_white_rounded"
+                android:hint="Budget amount"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:textColor="#000"
+                android:textSize="15sp" />
 
-    </LinearLayout>
+            <!-- Tiêu đề -->
+            <TextView
+                android:id="@+id/tv_date_range"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Date Range"
+                android:textColor="#000000"
+                android:textSize="17dp"
+                android:textStyle="normal" />
+
+            <!-- Ô: Thời gian áp dụng -->
+            <EditText
+                android:id="@+id/et_month"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_white_rounded"
+                android:focusable="false"
+                android:hint="Month"
+                android:padding="12dp"
+                android:textColor="#000"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/et_year"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_white_rounded"
+                android:focusable="false"
+                android:hint="Year"
+                android:padding="12dp"
+                android:textColor="#000"
+                android:textSize="15sp" />
+
+            <!-- Nút lưu -->
+            <LinearLayout
+                android:layout_width="378dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_cancel_budget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="4dp"
+                    android:backgroundTint="#BDBDBD"
+                    android:paddingHorizontal="28dp"
+                    android:paddingVertical="12dp"
+                    android:text="Cancle"
+                    android:textColor="#FFF"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_save_budget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="4dp"
+                    android:backgroundTint="#E91E63"
+                    android:paddingHorizontal="28dp"
+                    android:paddingVertical="12dp"
+                    android:text="  Save  "
+                    android:textColor="#FFF"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <!-- Form nội dung -->
+
 
 </RelativeLayout>

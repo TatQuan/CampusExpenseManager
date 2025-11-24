@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.campusexpensemanager.Data.dao.BudgetDAO;
 import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.models.Budget;
 import com.example.campusexpensemanager.models.Category;
@@ -20,20 +21,21 @@ public class CategoryBudgetAdapter extends RecyclerView.Adapter<CategoryBudgetAd
 
     private Context context;
     private List<Category> categoryList;
-    private List<Budget> budgetList;
     private int userId; //Nạp user vào để tìm budget theo userId
     private OnItemClickListener listener;
+    private BudgetDAO budgetDAO;
+
+    private double budgetTotal;
+
 
     public interface OnItemClickListener {
-        void onItemClick(Category category, Budget budget);
+        void onItemClick(Category category);
     }
 
-    public CategoryBudgetAdapter(Context context, List<Category> categoryList,
-                                 List<Budget> budgetList, int userId,
+    public CategoryBudgetAdapter(Context context, List<Category> categoryList, int userId,
                                  OnItemClickListener listener) {
         this.context = context;
         this.categoryList = categoryList;
-        this.budgetList = budgetList;
         this.userId = userId;
         this.listener = listener;
     }
@@ -50,28 +52,24 @@ public class CategoryBudgetAdapter extends RecyclerView.Adapter<CategoryBudgetAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category category = categoryList.get(position);
 
+
         // Tìm budget theo categoryId và userId
-        Budget matchedBudget = null;
-        for (Budget b : budgetList) {
-            if (b.getCategoryId() == category.getId() && b.getUserId() == userId) {
-                matchedBudget = b;
-                break;
-            }
-        }
+        budgetTotal = 0;
+        budgetDAO = new BudgetDAO(context);
+        budgetTotal = budgetDAO.getSumAmountBudgetByCategory(category.getId(), userId);
 
         holder.tvCategoryName.setText(category.getName());
 
-        if (matchedBudget != null) {
-            holder.tvBudgetAmount.setText(String.valueOf(matchedBudget.getBudgetAmount()) + " VND");
+        if (budgetTotal != 0) {
+            holder.tvBudgetAmount.setText(String.valueOf(budgetTotal) + " VND");
         } else {
             holder.tvBudgetAmount.setText("0 VND");
         }
 
-        Budget finalBudget = matchedBudget;
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onItemClick(category, finalBudget);
+                listener.onItemClick(category);
             }
         });
 

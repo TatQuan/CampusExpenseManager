@@ -72,11 +72,12 @@ public class CategoryDAO {
     }
 
     //UPDATE CATEGORY - sửa category (cần phải sửa)
-    public void updateCategory(int id, String name, String description) {
+    public void updateCategory(int id, String name, String description, String iconName) {
         SQLiteDatabase db = dbhelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.CategoryTable.COLUMN_NAME, name);
         values.put(DatabaseContract.CategoryTable.COLUMN_DESCRIPTION, description);
+        values.put(DatabaseContract.CategoryTable.COLUMN_ICON_NAME, iconName);
         db.update(DatabaseContract.CategoryTable.TABLE_NAME, values,
                 DatabaseContract.CategoryTable.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
     }

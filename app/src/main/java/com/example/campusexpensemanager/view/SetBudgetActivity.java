@@ -122,6 +122,11 @@ public class SetBudgetActivity extends AppCompatActivity {
             // Có thể finish() hoặc chuyển màn khác nếu cần
             // finish();
         });
+
+        Button btnCancelBudget = findViewById(R.id.btn_cancel_budget);
+        btnCancelBudget.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void showYearPickerDialog() {

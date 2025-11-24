@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF5F7">
+    android:background="#FFF5F7"
+    android:fitsSystemWindows="true">
 
     <!-- Giao diện hồ sơ -->
     <LinearLayout
         android:id="@+id/contentLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
         android:padding="24dp"
@@ -60,18 +61,32 @@
                 android:background="@drawable/edittext_border_black"
                 android:layout_marginBottom="30dp" />
             <!-- Nút enter -->
-            <Button
-                android:id="@+id/btn_enter"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enter"
-                android:backgroundTint="#E91E63"
-                android:textColor="#FFFFFF"
-                android:paddingHorizontal="40dp"
-                android:paddingVertical="10dp"
-                android:textAllCaps="false"
-                android:layout_gravity="center"
-                android:layout_marginBottom="12dp" />
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="10dp">
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancle"
+                    android:backgroundTint="#BDBDBD"
+                    android:textColor="#FFFFFF"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center" />
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Save "
+                    android:backgroundTint="#E91E63"
+                    android:textColor="#FFFFFF"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

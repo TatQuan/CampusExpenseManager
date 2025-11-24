@@ -6,4 +6,12 @@
         android:id="@+id/editBudget"
         android:title="Edit budget"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/editCategory"
+        android:title="Edit Category"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/deleteCategory"
+        android:title="Delete Category"
+        app:showAsAction="never" />
 </menu>

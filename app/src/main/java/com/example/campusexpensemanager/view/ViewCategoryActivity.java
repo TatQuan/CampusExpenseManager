@@ -1,5 +1,6 @@
 package com.example.campusexpensemanager.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.campusexpensemanager.Data.dao.BudgetDAO;
+import com.example.campusexpensemanager.Data.dao.CategoryDAO;
 import com.example.campusexpensemanager.Data.dao.ExpenseDAO;
 import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.adapters.ExpenseCategoryAdapter;
+import com.example.campusexpensemanager.models.Budget;
 import com.example.campusexpensemanager.models.Expense;
 import com.example.campusexpensemanager.session.Session;
 
@@ -42,6 +45,10 @@ public class ViewCategoryActivity extends AppCompatActivity {
     private Spinner monthFilter;
     private Spinner yearFilter;
     private BudgetDAO budgetDAO;
+    private Budget budget;
+
+    private List<Integer> months = new ArrayList<>();
+    private List<Integer> years = new ArrayList<>();
 
     // Cờ để bỏ qua lần onItemSelected đầu tiên
     private boolean isMonthFirstSelect = true;
@@ -75,6 +82,8 @@ public class ViewCategoryActivity extends AppCompatActivity {
         useId = session.getUserId();  // chú ý: Session phải fix KEY_USER_ID như mình nói lúc nãy
 
         expenseDAO = new ExpenseDAO(this);
+        budgetDAO = new BudgetDAO(this);
+
 
         // Lấy TẤT CẢ expense theo category ngay lần đầu: không filter theo tháng/năm
         List<Expense> expenseList = expenseDAO.getAllExpensesByCategory(categoryId, useId);
@@ -104,9 +113,6 @@ public class ViewCategoryActivity extends AppCompatActivity {
         monthFilter = findViewById(R.id.sp_month_filter);
         yearFilter = findViewById(R.id.sp_year_filter);
 
-        final List<Integer> months = new ArrayList<>();
-        final List<Integer> years = new ArrayList<>();
-
         for (int i = 1; i <= 12; i++) {
             months.add(i);
         }
@@ -119,7 +125,7 @@ public class ViewCategoryActivity extends AppCompatActivity {
         }
 
         // Ví dụ: 5 năm trước tới 5 năm sau
-        for (int i = currentYear - 5; i <= currentYear + 5; i++) {
+        for (int i = currentYear - 5; i <= currentYear; i++) {
             years.add(i);
         }
 
@@ -144,7 +150,7 @@ public class ViewCategoryActivity extends AppCompatActivity {
         monthFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Bỏ qua lần gọi đầu tiên (do hệ thống tự trigger khi setAdapter)
+
                 if (isMonthFirstSelect) {
                     isMonthFirstSelect = false;
                     return;
@@ -153,6 +159,18 @@ public class ViewCategoryActivity extends AppCompatActivity {
                 int selectedMonth = months.get(position);
                 int selectedYear = years.get(yearFilter.getSelectedItemPosition());
                 updateExpenseList(selectedMonth, selectedYear);
+
+                // Lấy budget theo năm và tháng
+                budget = budgetDAO.getBudgetByMonthAndYear(useId, categoryId, selectedMonth, selectedYear);
+                if (budget != null) {
+                    tvBudgetAmount.setText(String.valueOf(budget.getBudgetAmount()) + " VND");
+                } else {
+                    tvBudgetAmount.setText("0 VND");
+                }
+
+                // Lấy tổng chi tiêu theo tháng/năm
+                double totalSpent = expenseDAO.getTotalExpenseByMonthAndYear(useId, categoryId, selectedYear, selectedMonth);
+                tvTotalSpent.setText(String.valueOf(totalSpent) + " VND");
             }
 
             @Override
@@ -173,6 +191,18 @@ public class ViewCategoryActivity extends AppCompatActivity {
                 int selectedMonth = months.get(monthFilter.getSelectedItemPosition());
                 int selectedYear = years.get(position);
                 updateExpenseList(selectedMonth, selectedYear);
+
+                // Lấy budget theo năm và tháng
+                budget = budgetDAO.getBudgetByMonthAndYear(useId, categoryId, selectedMonth, selectedYear);
+                if (budget != null) {
+                    tvBudgetAmount.setText(String.valueOf(budget.getBudgetAmount()) + " VND");
+                } else {
+                    tvBudgetAmount.setText("0 VND");
+                }
+
+                // Lấy tổng chi tiêu theo tháng/năm
+                double totalSpent = expenseDAO.getTotalExpenseByMonthAndYear(useId, categoryId, selectedYear, selectedMonth);
+                tvTotalSpent.setText(String.valueOf(totalSpent) + " VND");
             }
 
             @Override
@@ -200,21 +230,63 @@ public class ViewCategoryActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate menu; thêm các item vào ActionBar
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Xử lý click menu
+        CategoryDAO categoryDAO = new CategoryDAO(this);
         int id = item.getItemId();
         if (id == R.id.editBudget) {
-            Toast.makeText(this, "Edit budget clicked", Toast.LENGTH_SHORT).show();
+
+            // Lấy tháng/năm đang chọn trên spinner
+            int selectedMonth = months.get(monthFilter.getSelectedItemPosition());
+            int selectedYear = years.get(yearFilter.getSelectedItemPosition());
+
+            Intent intent = new Intent(this, EditBudgetActivity.class);
+            intent.putExtra("EXTRA_CATEGORY_ID", categoryId);
+            intent.putExtra("EXTRA_CATEGORY_NAME", categoryName);
+            intent.putExtra("EXTRA_MONTH", selectedMonth);
+            intent.putExtra("EXTRA_YEAR", selectedYear);
+            startActivity(intent);
             return true;
+
+        } else if (id == R.id.editCategory) {
+            Intent intent = new Intent(this, EditCategoryActivity.class);
+            intent.putExtra(ViewCategoryActivity.EXTRA_CATEGORY_ID, categoryId);
+            startActivity(intent);
+            return true;
+
+        } else if (id == R.id.deleteCategory) {
+            categoryDAO.deleteCategory(categoryId);
+            finish();
+            return true;
+
         } else if (id == android.R.id.home) {
             onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem editCategoryItem = menu.findItem(R.id.editCategory);
+        MenuItem deleteCategoryItem = menu.findItem(R.id.deleteCategory);
+
+
+        // Ẩn nếu role == "STUDENT"
+        if (session.getRole().equals("STUDENT")) {
+            editCategoryItem.setVisible(false);
+            deleteCategoryItem.setVisible(false);
+        } else {
+            editCategoryItem.setVisible(true);
+            deleteCategoryItem.setVisible(true);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
 }

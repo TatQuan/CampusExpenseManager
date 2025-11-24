@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF5F7">
+    android:background="#FFF5F7"
+    android:gravity="center"
+    android:fitsSystemWindows="true"  >
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,13 +24,13 @@
                 android:id="@+id/et_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Date"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="10dp"
                 android:background="@android:drawable/edit_text"
-                android:padding="10dp"
-                android:focusable="false"
                 android:clickable="true"
+                android:focusable="false"
+                android:hint="Date"
                 android:inputType="none"
+                android:padding="10dp"
                 android:textColor="#000" />
 
             <!-- Checkbox cho chi tiêu định kỳ -->
@@ -36,48 +38,48 @@
                 android:id="@+id/checkboxRecurring"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Recurring"
-                android:textColor="#000"
-                android:layout_marginTop="8dp" />
+                android:textColor="#000" />
 
             <!-- Start Date (ẩn khi không chọn Recurring) -->
             <EditText
                 android:id="@+id/et_start_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Start Date"
                 android:layout_marginTop="12dp"
                 android:background="@android:drawable/edit_text"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="Start Date"
+                android:inputType="none"
                 android:padding="10dp"
                 android:textColor="#000"
-                android:visibility="gone"
-                android:focusable="false"
-                android:clickable="true"
-                android:inputType="none" />
+                android:visibility="gone" />
 
             <!-- End Date (ẩn khi không chọn Recurring) -->
             <EditText
                 android:id="@+id/et_end_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="End Date"
                 android:layout_marginTop="12dp"
                 android:background="@android:drawable/edit_text"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="End Date"
+                android:inputType="none"
                 android:padding="10dp"
                 android:textColor="#000"
-                android:visibility="gone"
-                android:focusable="false"
-                android:clickable="true"
-                android:inputType="none" />
+                android:visibility="gone" />
 
             <!-- Ghi chú -->
             <EditText
                 android:id="@+id/et_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Description"
                 android:layout_marginTop="12dp"
                 android:background="@android:drawable/edit_text"
+                android:hint="Description"
                 android:padding="10dp"
                 android:textColor="#000" />
 
@@ -86,9 +88,9 @@
                 android:id="@+id/et_expenditure_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Expenditure amount"
                 android:layout_marginTop="12dp"
                 android:background="@android:drawable/edit_text"
+                android:hint="Expenditure amount"
                 android:padding="10dp"
                 android:textColor="#000" />
 
@@ -102,7 +104,7 @@
                 android:text="Category"
                 android:textColor="#000"
                 android:textSize="22sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <!-- Grid các danh mục -->
             <androidx.recyclerview.widget.RecyclerView
@@ -117,20 +119,44 @@
                 tools:spanCount="5" />
 
             <!-- Nút thêm chi tiêu -->
-            <Button
-                android:id="@+id/btn_add_expense"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="40dp"
-                android:backgroundTint="#E91E63"
-                android:paddingHorizontal="50dp"
-                android:paddingVertical="14dp"
-                android:text="Add Expense"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="16sp" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_cancel_expense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="#BDBDBD"
+                    android:paddingHorizontal="30dp"
+                    android:paddingVertical="14dp"
+                    android:text="Cancle "
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_add_expense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="#E91E63"
+                    android:paddingHorizontal="40dp"
+                    android:paddingVertical="14dp"
+                    android:text=" Add "
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
