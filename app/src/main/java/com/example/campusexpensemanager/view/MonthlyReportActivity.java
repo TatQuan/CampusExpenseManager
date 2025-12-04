@@ -12,6 +12,7 @@ import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.Data.dao.MonthlyReportDAO;
 import com.example.campusexpensemanager.adapters.MonthlyReportAdapter;
 import com.example.campusexpensemanager.models.MonthlyReport;
+import com.example.campusexpensemanager.session.Session;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -86,9 +87,8 @@ public class MonthlyReportActivity extends AppCompatActivity {
     private int getCurrentUserId() {
         // TODO: thay bằng logic thực tế của app
         // Ví dụ:
-        // Session session = new Session(this);
-        // return session.getUserId();
-        return 1;
+         Session session = new Session(this);
+         return session.getUserId();
     }
 
     private void setupSummary(List<MonthlyReport> reports) {

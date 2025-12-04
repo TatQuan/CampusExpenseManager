@@ -7,10 +7,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -92,11 +94,9 @@ public class ViewCategoryActivity extends AppCompatActivity {
         expenseCategoryAdapter = new ExpenseCategoryAdapter(
                 this,
                 expenseList,
-                expense -> {
-                    // TODO: Edit expense
-
-                }
+                expense -> showEditExpenseDialog(expense)
         );
+
         rvExpense.setLayoutManager(new LinearLayoutManager(this));
         rvExpense.setAdapter(expenseCategoryAdapter);
 
@@ -271,6 +271,77 @@ public class ViewCategoryActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void showEditExpenseDialog(Expense expense) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_expense, null);
+        builder.setView(dialogView);
+
+        EditText etAmount = dialogView.findViewById(R.id.etAmount);
+        EditText etDescription = dialogView.findViewById(R.id.etDescription);
+
+        // set sẵn giá trị hiện tại
+        etAmount.setText(String.valueOf(expense.getAmount()));
+        etDescription.setText(expense.getDescription());
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String amountStr = etAmount.getText().toString().trim();
+            String descStr = etDescription.getText().toString().trim();
+
+            if (amountStr.isEmpty()) {
+                Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            double newAmount;
+            try {
+                newAmount = Double.parseDouble(amountStr);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Invalid amount", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Cập nhật object
+            expense.setAmount(newAmount);
+            expense.setDescription(descStr);
+
+            // Ghi xuống DB
+            int rows = expenseDAO.updateExpense(expense);
+            if (rows > 0) {
+                Toast.makeText(this, "Update success", Toast.LENGTH_SHORT).show();
+
+                // Refresh lại list theo tháng/năm đang chọn
+                int selectedMonth = months.get(monthFilter.getSelectedItemPosition());
+                int selectedYear = years.get(yearFilter.getSelectedItemPosition());
+
+                updateExpenseList(selectedMonth, selectedYear);
+
+                // Cập nhật lại budget + tổng chi
+                budget = budgetDAO.getBudgetByMonthAndYear(useId, categoryId, selectedMonth, selectedYear);
+                if (budget != null) {
+                    tvBudgetAmount.setText(budget.getBudgetAmount() + " VND");
+                } else {
+                    tvBudgetAmount.setText("0 VND");
+                }
+
+                double totalSpent = expenseDAO.getTotalExpenseByMonthAndYear(
+                        useId,
+                        categoryId,
+                        selectedYear,
+                        selectedMonth
+                );
+                tvTotalSpent.setText(totalSpent + " VND");
+            } else {
+                Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancle", (dialog, which) -> dialog.dismiss());
+
+        builder.create().show();
+    }
+
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

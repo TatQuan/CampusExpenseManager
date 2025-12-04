@@ -37,38 +37,18 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Total Expenditure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Spending average this month"
                         android:textColor="#E91E63"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
 
-                    <TextView
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChartMonthly"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="8dp"
-                        android:text="Spending Statistics"
-                        android:textColor="#555555"
-                        android:textSize="14sp" />
-
-                    <!-- Biểu đồ cột mô phỏng -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="8dp"
-                        android:gravity="bottom"
-                        android:orientation="horizontal"
-                        android:weightSum="7">
-
-                        <View android:layout_width="0dp" android:layout_height="70dp" android:layout_weight="1" android:background="#F48FB1" />
-                        <View android:layout_width="0dp" android:layout_height="65dp" android:layout_weight="1" android:background="#F48FB1" />
-                        <View android:layout_width="0dp" android:layout_height="45dp" android:layout_weight="1" android:background="#F48FB1" />
-                        <View android:layout_width="0dp" android:layout_height="55dp" android:layout_weight="1" android:background="#F48FB1" />
-                        <View android:layout_width="0dp" android:layout_height="60dp" android:layout_weight="1" android:background="#F48FB1" />
-                        <View android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:background="#F48FB1" />
-                        <View android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1" android:background="#F48FB1" />
-                    </LinearLayout>
+                        android:layout_height="220dp"
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

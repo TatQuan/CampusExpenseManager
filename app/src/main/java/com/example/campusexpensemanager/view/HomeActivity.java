@@ -1,22 +1,54 @@
 package com.example.campusexpensemanager.view;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 
+import com.example.campusexpensemanager.Data.dao.MonthlyReportDAO;
 import com.example.campusexpensemanager.R;
+import com.example.campusexpensemanager.models.MonthlyReport;
 import com.example.campusexpensemanager.session.Session;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class HomeActivity extends AddExpenseActivity {
     private Intent intent;
+    private PieChart pieChart;
+    private MonthlyReportDAO monthlyReportDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+
+
+        int userId = getCurrentUserId();
+
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH) + 1;
+        int year = cal.get(Calendar.YEAR);
+        String period = String.format(Locale.getDefault(), "%04d-%02d", year, month);
+        monthlyReportDAO = new MonthlyReportDAO(this);
+        // 1. Generate report cho tháng hiện tại
+        monthlyReportDAO.generateMonthlyReport(userId, month, year);
+
+        // 2. Lấy list report
+        List<MonthlyReport> reports = monthlyReportDAO.getMonthlyReportByPeriod(period);
+
+        pieChart = findViewById(R.id.pieChartMonthly);
+        setupPieChart(reports);
 
         //Get session
         Session session = new Session(this);
@@ -69,5 +101,40 @@ public class HomeActivity extends AddExpenseActivity {
         btnUser.setOnClickListener(view -> {
             startActivity(new Intent(HomeActivity.this, UserActivity.class));
         });
+    }
+
+    private void setupPieChart(List<MonthlyReport> reports) {
+        List<PieEntry> entries = new ArrayList<>();
+
+        for (MonthlyReport r : reports) {
+            if (r.getTotalExpense() > 0) {
+                String label = "Category #" + r.getCategoryId();
+                entries.add(new PieEntry((float) r.getTotalExpense(), label));
+            }
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "");
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataSet.setSliceSpace(2f);
+        dataSet.setValueTextSize(11f);
+
+        PieData data = new PieData(dataSet);
+        pieChart.setData(data);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setUsePercentValues(false);
+        pieChart.setEntryLabelTextSize(11f);
+        pieChart.setHoleColor(android.graphics.Color.WHITE);
+        pieChart.setCenterText("Expense");
+        pieChart.setCenterTextColor(Color.parseColor("#E91E63"));
+        pieChart.setCenterTextSize(14f);
+
+        pieChart.invalidate();
+    }
+
+    private int getCurrentUserId() {
+        // TODO: thay bằng logic thực tế của app
+        // Ví dụ:
+        Session session = new Session(this);
+        return session.getUserId();
     }
 }

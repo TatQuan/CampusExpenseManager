@@ -18,23 +18,26 @@ import java.util.List;
 
 public class ExpenseCategoryAdapter extends RecyclerView.Adapter<ExpenseCategoryAdapter.ExpenseViewHolder> {
 
-    private final List<Expense> expenseList;
-    private final LayoutInflater inflater;
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(Expense expense);
+    public interface OnExpenseClickListener {
+        void onExpenseClick(Expense expense);
     }
 
-    public ExpenseCategoryAdapter(Context context, List<Expense> expenseList, OnItemClickListener listener) {
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final OnExpenseClickListener listener;
+    private final List<Expense> expenseList;
+
+    public ExpenseCategoryAdapter(Context context,
+                                  List<Expense> expenseList,
+                                  OnExpenseClickListener listener) {
+        this.context = context;
         this.inflater = LayoutInflater.from(context);
-        // tránh null pointer
-        if (expenseList != null) {
-            this.expenseList = expenseList;
-        } else {
-            this.expenseList = new ArrayList<>();
-        }
         this.listener = listener;
+        // tránh null + copy list đầu vào
+        this.expenseList = new ArrayList<>();
+        if (expenseList != null) {
+            this.expenseList.addAll(expenseList);
+        }
     }
 
     @NonNull
@@ -67,15 +70,13 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<ExpenseCategory
         // Recurring badge
         if (expense.getIsRecurring() == 1) {
             holder.tvRecurring.setVisibility(View.VISIBLE);
-            // Nếu muốn dynamic text thì set ở đây, mặc định XML đang là "Monthly"
-            // holder.tvRecurring.setText("Recurring");
         } else {
             holder.tvRecurring.setVisibility(View.GONE);
         }
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onItemClick(expense);
+                listener.onExpenseClick(expense);
             }
         });
     }
@@ -85,8 +86,8 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<ExpenseCategory
         return expenseList.size();
     }
 
-    // Nếu sau này bạn muốn update list:
-    public void setData(List<Expense> newList) {
+    // Hàm update list dùng chung
+    public void updateExpenseList(List<Expense> newList) {
         expenseList.clear();
         if (newList != null) {
             expenseList.addAll(newList);
@@ -115,17 +116,4 @@ public class ExpenseCategoryAdapter extends RecyclerView.Adapter<ExpenseCategory
             tvDescription = itemView.findViewById(R.id.tvDescription);
         }
     }
-
-    public void updateExpenseList(List<Expense> expenseList) {
-        this.expenseList.clear();
-        this.expenseList.addAll(expenseList);
-        notifyDataSetChanged();
-    }
-
-
 }
-
-
-
-
-

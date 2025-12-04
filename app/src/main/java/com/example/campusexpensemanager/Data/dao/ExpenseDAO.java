@@ -356,5 +356,23 @@ public class ExpenseDAO {
         return total;
     }
 
+    public int updateExpense(Expense expense) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(DatabaseContract.ExpenseTable.COLUMN_DESCRIPTION, expense.getDescription());
+        values.put(DatabaseContract.ExpenseTable.COLUMN_AMOUNT, expense.getAmount());
+        // Nếu sau này muốn cho sửa date thì put thêm:
+        // values.put(DatabaseContract.ExpenseTable.COLUMN_DATE, expense.getDate());
+
+        String whereClause = DatabaseContract.ExpenseTable.COLUMN_ID + " = ?";
+        String[] whereArgs = { String.valueOf(expense.getId()) };
+
+        int rows = db.update(DatabaseContract.ExpenseTable.TABLE_NAME, values, whereClause, whereArgs);
+        db.close();
+        return rows;
+    }
+
+
 
 }
