@@ -120,7 +120,7 @@ public class SetBudgetActivity extends AppCompatActivity {
 
             Toast.makeText(this, "Budget saved successfully!", Toast.LENGTH_SHORT).show();
             // Có thể finish() hoặc chuyển màn khác nếu cần
-            // finish();
+             finish();
         });
 
         Button btnCancelBudget = findViewById(R.id.btn_cancel_budget);

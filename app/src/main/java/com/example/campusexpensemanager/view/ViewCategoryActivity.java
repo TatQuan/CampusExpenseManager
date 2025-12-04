@@ -93,7 +93,8 @@ public class ViewCategoryActivity extends AppCompatActivity {
                 this,
                 expenseList,
                 expense -> {
-                    // TODO: Handle click on expense nếu muốn
+                    // TODO: Edit expense
+
                 }
         );
         rvExpense.setLayoutManager(new LinearLayoutManager(this));

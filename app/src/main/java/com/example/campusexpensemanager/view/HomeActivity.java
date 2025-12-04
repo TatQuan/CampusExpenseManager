@@ -60,7 +60,9 @@ public class HomeActivity extends AddExpenseActivity {
 
         LinearLayout btnMonthlyReport = findViewById(R.id.btn_monthly_report);
         btnMonthlyReport.setOnClickListener(view -> {
-            startActivity(new Intent(HomeActivity.this, ReportActivity.class));
+//            startActivity(new Intent(HomeActivity.this, ReportActivity.class));
+            startActivity(new Intent(this, MonthlyReportActivity.class));
+
         });
 
         LinearLayout btnUser = findViewById(R.id.btn_user);

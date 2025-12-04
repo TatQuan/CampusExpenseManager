@@ -12,9 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusExpenseManager">
         <activity
-            android:name=".view.EditBudgetActivity"
-            android:parentActivityName=".view.ViewCategoryActivity"
+            android:name=".view.MonthlyReportActivity"
+            android:parentActivityName=".view.HomeActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.EditBudgetActivity"
+            android:exported="false"
+            android:parentActivityName=".view.ViewCategoryActivity" />
         <activity
             android:name=".view.AddUserActivity"
             android:exported="false"
@@ -25,8 +29,8 @@
             android:parentActivityName=".view.HomeActivity" />
         <activity
             android:name=".view.AddCategoryActivity"
-            android:parentActivityName=".view.CategoryActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".view.CategoryActivity" />
         <activity
             android:name=".view.EditCategoryActivity"
             android:exported="false"
@@ -41,10 +45,6 @@
             android:parentActivityName=".view.CategoryActivity" />
         <activity
             android:name=".view.AddExpenseActivity"
-            android:exported="false"
-            android:parentActivityName=".view.HomeActivity" />
-        <activity
-            android:name=".view.ReportActivity"
             android:exported="false"
             android:parentActivityName=".view.HomeActivity" />
         <activity
