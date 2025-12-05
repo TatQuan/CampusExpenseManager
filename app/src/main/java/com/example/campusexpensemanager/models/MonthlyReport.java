@@ -7,6 +7,10 @@ public class MonthlyReport {
     private double budget;
     private double totalExpense;
 
+    public MonthlyReport() {
+    }
+
+
     public MonthlyReport(int reportId, int categoryId, String period, double budget, double totalExpense) {
         this.reportId = reportId;
         this.categoryId = categoryId;
@@ -49,4 +53,25 @@ public class MonthlyReport {
     public boolean isOverBudget() {
         return totalExpense > budget;
     }
+
+    public void setReportId(int reportId) {
+        this.reportId = reportId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public void setBudget(double budget) {
+        this.budget = budget;
+    }
+
+    public void setTotalExpense(double totalExpense) {
+        this.totalExpense = totalExpense;
+    }
+
 }

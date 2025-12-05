@@ -12,7 +12,7 @@ import com.example.campusexpensemanager.models.User;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "CampusExpenseManager.db";
-    private static final int DATABASE_VERSION = 1; // tăng phiên bản vì thêm cột role
+    private static final int DATABASE_VERSION = 2; // tăng phiên bản vì thêm cột role
 
     // Tên bảng
 

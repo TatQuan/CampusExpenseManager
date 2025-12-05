@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.campusexpensemanager.Data.dao.CategoryDAO;
 import com.example.campusexpensemanager.R;
 import com.example.campusexpensemanager.Data.dao.MonthlyReportDAO;
 import com.example.campusexpensemanager.adapters.MonthlyReportAdapter;
+import com.example.campusexpensemanager.models.Category;
 import com.example.campusexpensemanager.models.MonthlyReport;
 import com.example.campusexpensemanager.session.Session;
 import com.github.mikephil.charting.charts.PieChart;
@@ -34,6 +36,7 @@ public class MonthlyReportActivity extends AppCompatActivity {
     private RecyclerView rvMonthlyReport;
     private PieChart pieChart;
     private MonthlyReportDAO monthlyReportDAO;
+    private CategoryDAO categoryDAO;
     private final DecimalFormat moneyFormat = new DecimalFormat("#,##0.##");
 
     @Override
@@ -113,10 +116,16 @@ public class MonthlyReportActivity extends AppCompatActivity {
 
     private void setupPieChart(List<MonthlyReport> reports) {
         List<PieEntry> entries = new ArrayList<>();
+        CategoryDAO categoryDAO = new CategoryDAO(this);
 
         for (MonthlyReport r : reports) {
             if (r.getTotalExpense() > 0) {
-                String label = "Category #" + r.getCategoryId();
+
+                // Lấy tên category
+                Category category = categoryDAO.getCategoryById(r.getCategoryId());
+                String label = (category != null) ? category.getName() : "";
+
+                // Thêm PieEntry
                 entries.add(new PieEntry((float) r.getTotalExpense(), label));
             }
         }
@@ -128,14 +137,22 @@ public class MonthlyReportActivity extends AppCompatActivity {
 
         PieData data = new PieData(dataSet);
         pieChart.setData(data);
+
+        // Tắt nhãn category trên biểu đồ
+        pieChart.setDrawEntryLabels(false);
+
+        dataSet.setDrawValues(false);
+
+        // Ẩn mô tả
         pieChart.getDescription().setEnabled(false);
+
         pieChart.setUsePercentValues(false);
-        pieChart.setEntryLabelTextSize(11f);
-        pieChart.setHoleColor(android.graphics.Color.WHITE);
+        pieChart.setHoleColor(Color.WHITE);
         pieChart.setCenterText("Expense");
         pieChart.setCenterTextColor(Color.parseColor("#E91E63"));
         pieChart.setCenterTextSize(14f);
 
         pieChart.invalidate();
     }
+
 }

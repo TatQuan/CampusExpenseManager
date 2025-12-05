@@ -11,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.campusexpensemanager.Data.dao.CategoryDAO;
 import com.example.campusexpensemanager.R;
+import com.example.campusexpensemanager.models.Category;
 import com.example.campusexpensemanager.models.MonthlyReport;
 
 import java.text.DecimalFormat;
@@ -82,10 +84,10 @@ public class MonthlyReportAdapter extends RecyclerView.Adapter<MonthlyReportAdap
      * Cậu có CategoryDAO thì có thể đổi sang lấy tên thật từ DB.
      */
     private String getCategoryNameFromId(int categoryId) {
-        return "Category #" + categoryId;
+//        return "Category #" + categoryId;
         // Ví dụ nếu có CategoryDAO:
-        // CategoryDAO dao = new CategoryDAO(context);
-        // Category c = dao.getCategoryById(categoryId);
-        // return c != null ? c.getName() : "Khác";
+         CategoryDAO dao = new CategoryDAO(context);
+         Category c = dao.getCategoryById(categoryId);
+         return c != null ? c.getName() : "Khác";
     }
 }
