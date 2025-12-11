@@ -362,6 +362,10 @@ public class ExpenseDAO {
 
         values.put(DatabaseContract.ExpenseTable.COLUMN_DESCRIPTION, expense.getDescription());
         values.put(DatabaseContract.ExpenseTable.COLUMN_AMOUNT, expense.getAmount());
+        if (expense.getIsRecurring() == 1){
+            values.put(DatabaseContract.ExpenseTable.COLUMN_START_DATE, expense.getStartDate());
+            values.put(DatabaseContract.ExpenseTable.COLUMN_END_DATE, expense.getEndDate());
+        }
         // Nếu sau này muốn cho sửa date thì put thêm:
         // values.put(DatabaseContract.ExpenseTable.COLUMN_DATE, expense.getDate());
 
@@ -372,7 +376,4 @@ public class ExpenseDAO {
         db.close();
         return rows;
     }
-
-
-
 }

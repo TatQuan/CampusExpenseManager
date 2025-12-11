@@ -30,8 +30,8 @@ public class BudgetNotificationHelper {
                 notificationDAO.addNotification(
                         userId,
                         categoryId,
-                        "Bạn chưa đặt ngân sách cho tháng " + month + "/" + year
-                                + ", nhưng đã chi tiêu " + (long)totalExpense + " VND trong danh mục này."
+                        "You haven't set a budget for the month " + month + "/" + year + " yet"
+                                + ", but it has been spent " + (long)totalExpense + " VND in this category."
                 );
             }
             return;
@@ -53,14 +53,14 @@ public class BudgetNotificationHelper {
 
         // Tùy Ren chọn ngưỡng, Mei gợi ý:
         if (ratio >= 100) {
-            message = "Bạn đã vượt quá ngân sách của tháng " + month + "/" + year +
-                    " cho danh mục này. Tổng chi tiêu: " + (long)totalExpense +
-                    " / Ngân sách: " + (long)budgetAmount + " VND";
+            message = "You have exceeded your monthly budget " + month + "/" + year +
+                    " for this category. Total expense: " + (long)totalExpense +
+                    " / budget: " + (long)budgetAmount + " VND";
         } else if (ratio >= 80) {
-            message = "Bạn đã sử dụng " + (long)totalExpense +
+            message = "You have used " + (long)totalExpense +
                     " / " + (long)budgetAmount +
-                    " VND (" + (int)ratio + "%) ngân sách của tháng " + month + "/" + year +
-                    " cho danh mục này.";
+                    " VND (" + (int)ratio + "%) monthly budget " + month + "/" + year +
+                    " for this category.";
         }
 
         // 3. Nếu có message -> ghi vào bảng Notification

@@ -24,6 +24,10 @@ public class    Budget {
     public int getUserId() { return userId; }
     public int getCategoryId() { return categoryId; }
     public double getBudgetAmount() { return budgetAmount; }
+    public double getRemainingBudget() { return remainingBudget; }
+    public int getMonth() { return month; }
+    public int getYear() { return year; }
+
 
     public void setId(int id) { this.id = id; }
     public void setUserId(int userId) { this.userId = userId; }

@@ -279,10 +279,26 @@ public class ViewCategoryActivity extends AppCompatActivity {
 
         EditText etAmount = dialogView.findViewById(R.id.etAmount);
         EditText etDescription = dialogView.findViewById(R.id.etDescription);
+        EditText etStartDate = dialogView.findViewById(R.id.et_start_date);
+        EditText etEndDate = dialogView.findViewById(R.id.et_end_date);
+
+        TextView tvStartDate = dialogView.findViewById(R.id.tv_start_date);
+        TextView tvEndDate = dialogView.findViewById(R.id.tv_end_date);
 
         // set sẵn giá trị hiện tại
         etAmount.setText(String.valueOf(expense.getAmount()));
         etDescription.setText(expense.getDescription());
+
+        if (expense.getIsRecurring() == 1){
+            tvStartDate.setVisibility(View.VISIBLE);
+            tvEndDate.setVisibility(View.VISIBLE);
+            etStartDate.setVisibility(View.VISIBLE);
+            etEndDate.setVisibility(View.VISIBLE);
+
+            etStartDate.setText(String.valueOf(expense.getStartDate()));
+            etEndDate.setText(String.valueOf(expense.getEndDate()));
+
+        }
 
         builder.setPositiveButton("Save", (dialog, which) -> {
             String amountStr = etAmount.getText().toString().trim();
@@ -304,6 +320,13 @@ public class ViewCategoryActivity extends AppCompatActivity {
             // Cập nhật object
             expense.setAmount(newAmount);
             expense.setDescription(descStr);
+            if (expense.getIsRecurring() == 1){
+                String startDate = etStartDate.getText().toString().trim();
+                String endDate = etEndDate.getText().toString().trim();
+
+                expense.setStartDate(startDate);
+                expense.setEndDate(endDate);
+            }
 
             // Ghi xuống DB
             int rows = expenseDAO.updateExpense(expense);
@@ -337,7 +360,6 @@ public class ViewCategoryActivity extends AppCompatActivity {
         });
 
         builder.setNegativeButton("Cancle", (dialog, which) -> dialog.dismiss());
-
         builder.create().show();
     }
 

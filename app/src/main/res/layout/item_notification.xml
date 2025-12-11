@@ -37,7 +37,7 @@
           android:id="@+id/tv_message"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="Bạn đã vượt quá ngân sách tháng 10 cho danh mục Ăn uống."
+          android:text="You have exceeded your October budget for the Food And Beverage category."
           android:textSize="14sp"
           android:textStyle="bold"
           android:maxLines="2"
